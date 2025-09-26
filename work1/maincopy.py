@@ -42,6 +42,6 @@ def loo_eval(X, y, k):
 raw = np.loadtxt('semeion.data.txt')
 X, y = raw[:, :256], np.argmax(raw[:, 256:], 1)
 
-for k in [1, 3, 5]:
+for k in [1, 3, 5,7]:
     acc = loo_eval(X, y, k)
     print(f'k={k}  LOO 准确率 = {acc:.4f}')
