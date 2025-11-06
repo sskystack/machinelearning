@@ -18,7 +18,7 @@ from sklearn.datasets import make_classification
 from sklearn.metrics import accuracy_score
 import os
 
-plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['font.sans-serif'] = ['Heiti TC', 'STHeiti', 'Arial Unicode MS']
 plt.rcParams['axes.unicode_minus'] = False
 
 
@@ -102,16 +102,16 @@ class MyGaussianNB:
         TODO: 请完成MAP预测
         """
         # TODO: 1. 计算对数似然
-        log_likelihoods = None  # 使用 self._calculate_log_likelihood(X)
+        log_likelihoods = self._calculate_log_likelihood(X)
         
         # TODO: 2. 计算对数先验
-        log_priors = None  # np.log(self.priors_)
+        log_priors = np.log(self.priors_)
         
         # TODO: 3. 计算对数后验 = 对数似然 + 对数先验
-        log_joint = None  # log_likelihoods + log_priors
+        log_joint = log_likelihoods + log_priors
         
         # TODO: 4. 选择后验概率最大的类别
-        return None  # np.argmax(log_joint, axis=1)
+        return np.argmax(log_joint, axis=1)
 
 
 def apply_LRT_rule(model, X):
@@ -134,21 +134,21 @@ def apply_LRT_rule(model, X):
     TODO: 请完成LRT规则实现
     """
     # TODO: 1. 计算对数似然
-    log_likelihoods = None  # model._calculate_log_likelihood(X)
+    log_likelihoods = model._calculate_log_likelihood(X)
     
     # TODO: 2. 提取两个类别的对数似然
-    log_like_c0 = None  # log_likelihoods[:, 0]
-    log_like_c1 = None  # log_likelihoods[:, 1]
+    log_like_c0 = log_likelihoods[:, 0]
+    log_like_c1 = log_likelihoods[:, 1]
     
     # TODO: 3. 计算对数似然率 (左边)
-    log_likelihood_ratio = None  # log_like_c1 - log_like_c0
+    log_likelihood_ratio = log_like_c1 - log_like_c0
     
     # TODO: 4. 计算阈值 (右边)
     log_priors = np.log(model.priors_)
-    log_threshold = None  # log_priors[0] - log_priors[1]
+    log_threshold = log_priors[0] - log_priors[1]
     
     # TODO: 5. 应用LRT规则
-    predictions = None  # (log_likelihood_ratio > log_threshold).astype(int)
+    predictions =(log_likelihood_ratio > log_threshold).astype(int)
     
     return predictions
 

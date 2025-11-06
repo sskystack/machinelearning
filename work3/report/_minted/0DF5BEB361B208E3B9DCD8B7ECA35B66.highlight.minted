@@ -1,0 +1,19 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{ridge\PYGZus{}fit\PYGZus{}closed\PYGZus{}form}\PYG{p}{(}\PYG{n}{X}\PYG{p}{:} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ndarray}\PYG{p}{,} \PYG{n}{y}\PYG{p}{:} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ndarray}\PYG{p}{,} \PYG{n}{lam}\PYG{p}{:} \PYG{n+nb}{float}\PYG{p}{)} \PYG{o}{\PYGZhy{}}\PYG{o}{\PYGZgt{}} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ndarray}\PYG{p}{:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}岭回归闭式解：theta = (X\PYGZca{}T X + lambda * I)\PYGZca{}\PYGZob{}\PYGZhy{}1\PYGZcb{} X\PYGZca{}T y\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{m}\PYG{p}{,} \PYG{n}{n} \PYG{o}{=} \PYG{n}{X}\PYG{o}{.}\PYG{n}{shape}
+    \PYG{n}{I} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{eye}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)}
+    \PYG{n}{XtX} \PYG{o}{=} \PYG{n}{X}\PYG{o}{.}\PYG{n}{T} \PYG{o}{@} \PYG{n}{X}
+    \PYG{n}{XtX\PYGZus{}reg} \PYG{o}{=} \PYG{n}{XtX} \PYG{o}{+} \PYG{n}{lam} \PYG{o}{*} \PYG{n}{I}
+    \PYG{n}{Xty} \PYG{o}{=} \PYG{n}{X}\PYG{o}{.}\PYG{n}{T} \PYG{o}{@} \PYG{n}{y}
+    \PYG{n}{theta} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{inv}\PYG{p}{(}\PYG{n}{XtX\PYGZus{}reg}\PYG{p}{)} \PYG{o}{@} \PYG{n}{Xty}
+    \PYG{k}{return} \PYG{n}{theta}
+
+\PYG{c+c1}{\PYGZsh{} 单个正则化参数测试}
+\PYG{n}{lam} \PYG{o}{=} \PYG{l+m+mf}{1.0}
+\PYG{n}{theta} \PYG{o}{=} \PYG{n}{ridge\PYGZus{}fit\PYGZus{}closed\PYGZus{}form}\PYG{p}{(}\PYG{n}{X\PYGZus{}train\PYGZus{}ext}\PYG{p}{,} \PYG{n}{y\PYGZus{}train}\PYG{p}{,} \PYG{n}{lam}\PYG{p}{)}
+\PYG{n}{w}\PYG{p}{,} \PYG{n}{b} \PYG{o}{=} \PYG{n}{theta}\PYG{p}{[}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{,} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{theta}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+\PYG{n}{train\PYGZus{}mse} \PYG{o}{=} \PYG{n}{mse}\PYG{p}{(}\PYG{n}{y\PYGZus{}train}\PYG{p}{,} \PYG{n}{X\PYGZus{}train} \PYG{o}{@} \PYG{n}{w} \PYG{o}{+} \PYG{n}{b}\PYG{p}{)}
+\PYG{n}{test\PYGZus{}mse} \PYG{o}{=} \PYG{n}{mse}\PYG{p}{(}\PYG{n}{y\PYGZus{}test}\PYG{p}{,} \PYG{n}{X\PYGZus{}test} \PYG{o}{@} \PYG{n}{w} \PYG{o}{+} \PYG{n}{b}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{λ=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{lam}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ \PYGZhy{}\PYGZgt{} Train MSE: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{train\PYGZus{}mse}\PYG{l+s+si}{:}\PYG{l+s+s1}{.4f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, Test MSE: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{test\PYGZus{}mse}\PYG{l+s+si}{:}\PYG{l+s+s1}{.4f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, ||w||=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{norm}\PYG{p}{(}\PYG{n}{w}\PYG{p}{)}\PYG{l+s+si}{:}\PYG{l+s+s1}{.4f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\end{MintedVerbatim}

@@ -1,0 +1,27 @@
+\babel@toc {UKenglish}{}\relax 
+\contentsline {section}{\numberline {1}实验一：似然率测试规则（LRT）与最大后验概率规则（MAP）}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}实验目标}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}核心代码实现}{2}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}MAP分类规则实现}{2}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}LRT分类规则实现}{2}{subsubsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.3}实验结果分析}{3}{subsection.1.3}%
+\contentsline {subsubsection}{\numberline {1.3.1}高分离度与低分离度数据集对比}{3}{subsubsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.4}实验结论}{4}{subsection.1.4}%
+\contentsline {section}{\numberline {2}实验二：核密度估计与LRT分类}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}实验目标}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}核心代码实现}{4}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}核密度估计实现}{4}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}基于核密度估计的LRT分类}{5}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}K折交叉验证选择最优带宽}{6}{subsubsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.3}实验结果分析}{7}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}实验结论}{8}{subsection.2.4}%
+\contentsline {section}{\numberline {3}实验三：k-NN密度估计}{8}{section.3}%
+\contentsline {subsection}{\numberline {3.1}实验目标}{8}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}核心代码实现}{8}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}实验结果分析}{9}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}实验结论}{10}{subsection.3.4}%
+\contentsline {section}{\numberline {4}实验四：贝叶斯分类器在训练集与测试集上的评估}{10}{section.4}%
+\contentsline {subsection}{\numberline {4.1}实验目标}{10}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}核心代码实现}{10}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}实验结果分析}{11}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}实验结论}{12}{subsection.4.4}%

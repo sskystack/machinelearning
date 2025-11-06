@@ -21,7 +21,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 import os
 
-plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['font.sans-serif'] = ['Heiti TC', 'STHeiti', 'Arial Unicode MS']
 plt.rcParams['axes.unicode_minus'] = False
 
 
@@ -69,14 +69,14 @@ class MyGaussianKernelDensity:
         log_densities = []
         for x in X_new:
             # TODO: 1. 计算距离
-            distances = None  # np.linalg.norm(self.X_train_ - x, axis=1)
+            distances = np.linalg.norm(self.X_train_ - x, axis=1)
             
             # TODO: 2. 应用高斯核
-            kernel_vals = None  # np.exp(-0.5 * (distances / h)**2)
+            kernel_vals = np.exp(-0.5 * (distances / h)**2)
             
             # TODO: 3. 求和并取对数
-            density_sum = None  # np.sum(kernel_vals) + self._epsilon
-            log_density = None  # np.log(density_sum)
+            density_sum = np.sum(kernel_vals) + self._epsilon
+            log_density = np.log(density_sum)
             
             log_densities.append(log_density)
         
@@ -139,17 +139,17 @@ class MyKernelClassifier:
         TODO: 请完成LRT分类
         """
         # TODO: 1. 计算两个类别的对数似然
-        log_like_c0 = None  # self.kde_c0_.predict_log_density(X_new, h)
-        log_like_c1 = None  # self.kde_c1_.predict_log_density(X_new, h)
+        log_like_c0 = self.kde_c0_.predict_log_density(X_new, h)
+        log_like_c1 = self.kde_c1_.predict_log_density(X_new, h)
         
         # TODO: 2. 计算对数似然率
-        log_lr = None  # log_like_c1 - log_like_c0
+        log_lr = log_like_c1 - log_like_c0
         
         # TODO: 3. 计算阈值
-        log_threshold = None  # self.log_prior_c0_ - self.log_prior_c1_
+        log_threshold = self.log_prior_c0_ - self.log_prior_c1_
         
         # TODO: 4. 应用LRT规则
-        predictions = None  # (log_lr > log_threshold).astype(int)
+        predictions = (log_lr > log_threshold).astype(int)
         
         return predictions
 
@@ -186,16 +186,16 @@ def find_best_h(X, y, h_values, n_splits=5):
         # TODO: K折交叉验证循环
         for train_idx, val_idx in kf.split(X):
             # TODO: 1. 分割数据
-            X_train, X_val = None, None  # 提示: X[train_idx], X[val_idx]
-            y_train, y_val = None, None  # 提示: y[train_idx], y[val_idx]
+            X_train, X_val = X[train_idx], X[val_idx]
+            y_train, y_val = y[train_idx], y[val_idx]
             
             # TODO: 2. 训练模型
             model_cv = MyKernelClassifier()
-            # 提示: model_cv.fit(X_train, y_train)
+            model_cv.fit(X_train, y_train)
             
             # TODO: 3. 预测并计算准确率
-            y_pred = None  # 提示: model_cv.predict(X_val, h=h)
-            acc = None  # 提示: accuracy_score(y_val, y_pred)
+            y_pred = model_cv.predict(X_val, h=h)
+            acc = accuracy_score(y_val, y_pred)
             
             fold_accuracies.append(acc)
         

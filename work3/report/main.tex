@@ -1,0 +1,485 @@
+\documentclass[a4paper]{article}
+
+\input{style/ch_xelatex.tex}
+\input{style/scala.tex}
+
+%代码段设置
+\lstset{numbers=left,
+basicstyle=\tiny,
+numberstyle=\tiny,
+keywordstyle=\color{blue!70},
+commentstyle=\color{red!50!green!50!blue!50},
+frame=single, rulesepcolor=\color{red!20!green!20!blue!20},
+escapeinside=``
+}
+
+\graphicspath{ {images/} }
+\usepackage{ctex}
+\usepackage{graphicx}
+\usepackage{color,framed}%文本框
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{lastpage}%获得总页数
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{minted}
+\usepackage{graphics}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{pdfpages}
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
+\usepackage{multirow}
+\usepackage{footnote}
+\usepackage{booktabs}
+
+%-----------------------伪代码------------------
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\floatname{algorithm}{Algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\usepackage{lipsum}
+\makeatletter
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+  \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+      {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+      \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+      \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+      \fi
+      \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+  \end{center}
+  }
+\makeatother
+%------------------------代码-------------------
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{
+breaklines,%自动换行
+basicstyle=\small,
+escapeinside=``,
+keywordstyle=\color{ blue!70} \bfseries,
+commentstyle=\color{red!50!green!50!blue!50},%
+stringstyle=\ttfamily,%
+extendedchars=false,%
+linewidth=\textwidth,%
+numbers=left,%
+numberstyle=\tiny \color{blue!50},%
+frame=trbl%
+rulesepcolor= \color{ red!20!green!20!blue!20}
+}
+
+%-------------------------页面边距--------------
+\geometry{a4paper,left=2.3cm,right=2.3cm,top=2.7cm,bottom=2.7cm}
+%-------------------------页眉页脚--------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\kaishu \leftmark}
+% \chead{}
+\rhead{\kaishu 机器学习实验报告}%加粗\bfseries
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0pt}%去掉横线
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}%标题横线
+\newcommand{\HRulegrossa}{\rule{\linewidth}{1.2mm}}
+\setlength{\textfloatsep}{10mm}%设置图片的前后间距
+%--------------------文档内容--------------------
+
+\begin{document}
+\renewcommand{\contentsname}{目\ 录}
+\renewcommand{\appendixname}{附录}
+\renewcommand{\appendixpagename}{附录}
+\renewcommand{\refname}{参考文献}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
+
+%-------------------------封面----------------
+\begin{titlepage}
+    \begin{center}
+    \includegraphics[width=0.8\textwidth]{NKU.png}\\[1cm]
+    \vspace{20mm}
+		\textbf{\huge\textbf{\kaishu{计算机学院}}}\\[0.5cm]
+		\textbf{\huge{\kaishu{机器学习设计实验报告}}}\\[2.3cm]
+		\textbf{\Huge\textbf{\kaishu{模式识别与分类}}}
+
+		\vspace{\fill}
+
+    \centering
+    \textsc{\LARGE \kaishu{姓名\ :\ 周重天}}\\[0.5cm]
+    \textsc{\LARGE \kaishu{学号\ :\ 2311082}}\\[0.5cm]
+    \textsc{\LARGE \kaishu{专业\ :\ 计算机科学与技术}}\\[0.5cm]
+
+    \vfill
+    {\Large \today}
+    \end{center}
+\end{titlepage}
+
+\renewcommand {\thefigure}{\thesection{}.{\arabic{figure}}}%图片按章标号
+\renewcommand{\figurename}{图}
+\renewcommand{\contentsname}{目录}
+\cfoot{\thepage\ of \pageref{LastPage}}%当前页 of 总页数
+
+% 生成目录
+\clearpage
+\tableofcontents
+\newpage
+
+% 实验一：似然率测试规则（LRT）与最大后验概率规则（MAP）
+\section{实验一：似然率测试规则（LRT）与最大后验概率规则（MAP）}
+
+\subsection{实验目标}
+
+本实验旨在实现并验证两种贝叶斯分类规则：最大后验概率规则（MAP）和似然率测试规则（LRT）。MAP规则的决策公式为$C^* = \arg\max_{C_i} [\log P(X|C_i) + \log P(C_i)]$，LRT规则的决策准则为$\log P(X|C_1) - \log P(X|C_0) \gtrless \log P(C_0) - \log P(C_1)$。实验采用高斯朴素贝叶斯框架，在高分离度（class\_sep=2.0）和低分离度（class\_sep=0.5）数据集上评估分类性能。
+
+\subsection{核心代码实现}
+
+\subsubsection{MAP分类规则实现}
+
+MAP分类的核心代码如下：
+
+\begin{lstlisting}[language=Python]
+def predict(self, X):
+    # 1. 计算对数似然
+    log_likelihoods = self._calculate_log_likelihood(X)
+
+    # 2. 计算对数先验
+    log_priors = np.log(self.priors_)
+
+    # 3. 计算对数后验 = 对数似然 + 对数先验
+    log_joint = log_likelihoods + log_priors
+
+    # 4. 选择后验概率最大的类别
+    return np.argmax(log_joint, axis=1)
+\end{lstlisting}
+
+\textbf{代码分析：}第1行调用\_calculate\_log\_likelihood方法计算每个样本在各类别下的对数似然$\log P(X|C_i)$，返回形状为(n\_samples, n\_classes)的数组。第2行通过对先验概率取对数得到$\log P(C_i)$。第3行利用NumPy广播机制将对数先验加到对数似然上，得到对数后验。第4行使用np.argmax沿axis=1找到每个样本的最大后验概率对应的类别索引。
+
+\subsubsection{LRT分类规则实现}
+
+LRT分类的核心代码如下：
+
+\begin{lstlisting}[language=Python]
+def apply_LRT_rule(model, X):
+    # 1. 计算对数似然
+    log_likelihoods = model._calculate_log_likelihood(X)
+
+    # 2. 提取两个类别的对数似然
+    log_like_c0 = log_likelihoods[:, 0]
+    log_like_c1 = log_likelihoods[:, 1]
+
+    # 3. 计算对数似然率 (左边)
+    log_likelihood_ratio = log_like_c1 - log_like_c0
+
+    # 4. 计算阈值 (右边)
+    log_priors = np.log(model.priors_)
+    log_threshold = log_priors[0] - log_priors[1]
+
+    # 5. 应用LRT规则
+    predictions = (log_likelihood_ratio > log_threshold).astype(int)
+
+    return predictions
+\end{lstlisting}
+
+\textbf{代码分析：}第2-3行通过切片操作提取类别0和类别1的对数似然向量。第4行计算对数似然率$\log P(X|C_1) - \log P(X|C_0)$。第6行计算阈值$\log P(C_0) - \log P(C_1)$。第8行通过布尔比较和类型转换实现决策：当似然率超过阈值时预测为类别1，否则为类别0。
+
+\subsection{实验结果分析}
+
+\subsubsection{高分离度与低分离度数据集对比}
+
+\begin{figure}[H]
+    \centering
+    \subfigure[数据集1 - MAP规则]{
+        \includegraphics[width=0.48\textwidth]{../out/数据集1_(高分离度)_MAP.png}
+    }
+    \subfigure[数据集1 - LRT规则]{
+        \includegraphics[width=0.48\textwidth]{../out/数据集1_(高分离度)_LRT.png}
+    }
+    \caption{数据集1（高分离度）分类结果对比，错误率均为0.0100}
+    \label{fig:exp1_dataset1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \subfigure[数据集2 - MAP规则]{
+        \includegraphics[width=0.48\textwidth]{../out/数据集2_(低分离度)_MAP.png}
+    }
+    \subfigure[数据集2 - LRT规则]{
+        \includegraphics[width=0.48\textwidth]{../out/数据集2_(低分离度)_LRT.png}
+    }
+    \caption{数据集2（低分离度）分类结果对比，错误率均为0.2640}
+    \label{fig:exp1_dataset2}
+\end{figure}
+
+从图\ref{fig:exp1_dataset1}可见，高分离度数据集中红色点（类别0）和蓝色点（类别1）明显分离，仅在决策边界附近有约5个黄色叉号标记的错误点，错误率为1.00\%。MAP和LRT产生完全相同的决策边界和预测结果。
+
+图\ref{fig:exp1_dataset2}显示低分离度数据集中两类样本高度重叠，特别是在坐标原点附近混杂严重。决策边界两侧分布着大量黄色叉号，表明132个样本被错误分类，错误率达26.40\%。两种方法的决策边界和错误点分布完全一致，数值验证了算法等价性。
+
+\subsection{实验结论}
+
+本实验通过代码实现和实验验证，成功证明了MAP规则和LRT规则在高斯朴素贝叶斯框架下的理论等价性。两种方法在相同数据集上产生完全相同的错误率和决策边界。数据集的分离度对分类性能有决定性影响，高分离度数据集错误率仅为1.00\%，而低分离度数据集错误率达到26.40\%。高斯朴素贝叶斯在特征独立假设下产生线性决策边界，错误点主要分布在类别重叠区域。
+
+\section{实验二：核密度估计与LRT分类}
+
+\subsection{实验目标}
+
+本实验旨在实现高斯核密度估计方法并结合LRT规则进行分类。核密度估计是一种非参数方法，通过核函数对数据进行密度估计：$p(x) = \frac{1}{N} \sum_{i=1}^{N} K(\frac{x-x_i}{h})$，其中$K(u) = \exp(-0.5 \|u\|^2)$为高斯核函数，$h$为带宽参数。实验通过K折交叉验证寻找最优带宽$h$，在高分离度和低分离度数据集上评估非参数密度估计的分类效果。
+
+\subsection{核心代码实现}
+
+\subsubsection{核密度估计实现}
+
+核密度估计的核心代码如下：
+
+\begin{lstlisting}[language=Python]
+def predict_log_density(self, X_new, h):
+    log_densities = []
+    for x in X_new:
+        # 1. 计算距离
+        distances = np.linalg.norm(self.X_train_ - x, axis=1)
+
+        # 2. 应用高斯核
+        kernel_vals = np.exp(-0.5 * (distances / h)**2)
+
+        # 3. 求和并取对数
+        density_sum = np.sum(kernel_vals) + self._epsilon
+        log_density = np.log(density_sum)
+
+        log_densities.append(log_density)
+
+    return np.array(log_densities)
+\end{lstlisting}
+
+\textbf{代码分析：}第1行使用np.linalg.norm计算待估计点$x$到所有训练样本的欧氏距离，axis=1表示按行计算向量范数。第2行应用高斯核函数$K(u) = \exp(-0.5(d/h)^2)$，其中$d$为距离，$h$为带宽参数，带宽越大核函数越平滑。第3行对所有核值求和并加上小常数epsilon防止log(0)，然后取对数得到对数密度估计。这个循环对每个测试点重复上述过程。
+
+\subsubsection{基于核密度估计的LRT分类}
+
+LRT分类的核心代码如下：
+
+\begin{lstlisting}[language=Python]
+def predict(self, X_new, h):
+    # 1. 计算两个类别的对数似然
+    log_like_c0 = self.kde_c0_.predict_log_density(X_new, h)
+    log_like_c1 = self.kde_c1_.predict_log_density(X_new, h)
+
+    # 2. 计算对数似然率
+    log_lr = log_like_c1 - log_like_c0
+
+    # 3. 计算阈值
+    log_threshold = self.log_prior_c0_ - self.log_prior_c1_
+
+    # 4. 应用LRT规则
+    predictions = (log_lr > log_threshold).astype(int)
+
+    return predictions
+\end{lstlisting}
+
+\textbf{代码分析：}第1-2行分别调用两个类别的核密度估计器计算对数似然$\log p(x|C_0)$和$\log p(x|C_1)$。第3行计算对数似然率，这是LRT决策的核心量。第4行从先验概率计算决策阈值。第5行执行决策：当对数似然率超过阈值时预测为类别1，否则为类别0。
+
+\subsubsection{K折交叉验证选择最优带宽}
+
+交叉验证的核心代码如下：
+
+\begin{lstlisting}[language=Python]
+for h in h_values:
+    fold_accuracies = []
+    for train_idx, val_idx in kf.split(X):
+        # 1. 分割数据
+        X_train, X_val = X[train_idx], X[val_idx]
+        y_train, y_val = y[train_idx], y[val_idx]
+
+        # 2. 训练模型
+        model_cv = MyKernelClassifier()
+        model_cv.fit(X_train, y_train)
+
+        # 3. 预测并计算准确率
+        y_pred = model_cv.predict(X_val, h=h)
+        acc = accuracy_score(y_val, y_pred)
+
+        fold_accuracies.append(acc)
+
+    mean_accuracy = np.mean(fold_accuracies)
+\end{lstlisting}
+
+\textbf{代码分析：}外层循环遍历候选带宽值[0.1, 0.5, 1.0, 1.5, 2.0]。内层循环进行K折交叉验证，通过train\_idx和val\_idx索引分割训练集和验证集。对每个fold在训练集上拟合核密度估计器，在验证集上预测并计算准确率。最后对K折准确率求平均，选择平均准确率最高的带宽作为最优值。
+
+\subsection{实验结果分析}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out/数据集1_(高分离度)_kernel.png}
+    \caption{数据集1（高分离度）核密度估计分类结果，最优h=1.0，错误率=0.0200}
+    \label{fig:exp2_dataset1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out/数据集2_(低分离度)_kernel.png}
+    \caption{数据集2（低分离度）核密度估计分类结果，最优h=0.5，错误率=0.2500}
+    \label{fig:exp2_dataset2}
+\end{figure}
+
+从图\ref{fig:exp2_dataset1}可见，高分离度数据集通过5折交叉验证选择的最优带宽为h=1.0（平均准确率98.00\%）。决策边界相比实验一的线性边界更加平滑和曲线化，这是核密度估计非参数性质的体现。黄色叉号标记的错误点约4个，错误率为2.00\%，略高于实验一的参数方法（1.00\%），这是因为核密度估计需要估计整个密度函数而非仅估计参数，在小样本情况下可能存在过拟合风险。
+
+图\ref{fig:exp2_dataset2}显示低分离度数据集的最优带宽为h=0.5（平均准确率72.50\%），小于高分离度数据集的最优带宽。决策边界呈现不规则的曲线形状，在两类重叠严重的区域形成复杂的分界。密集的黄色叉号表明约50个样本被错误分类，错误率为25.00\%，略优于实验一的参数方法（26.40\%）。这说明核密度估计在数据分布复杂时可以通过非参数方式捕捉更灵活的决策边界。
+
+\subsection{实验结论}
+
+通过交叉验证发现，高分离度数据集的最优带宽h=1.0较大，对应平滑的决策边界；低分离度数据集的最优h=0.5较小，对应更复杂的决策边界。带宽参数需要在偏差和方差之间权衡。核密度估计产生非线性决策边界，在低分离度数据上性能略优于参数方法（25.00\% vs 26.40\%），但在高分离度数据上略逊（2.00\% vs 1.00\%），体现了非参数方法的灵活性。核密度估计的时间复杂度为$O(N \times M)$，高于参数方法。
+
+\section{实验三：k-NN密度估计}
+
+\subsection{实验目标}
+
+本实验旨在实现k近邻（k-NN）密度估计方法。k-NN密度估计也是一种非参数方法，其核心思想是基于局部密度估计：$p(x) = \frac{k}{N \times V}$，其中$k$是近邻数，$N$是训练样本总数，$V$是包含$k$个近邻的超球体体积。在二维空间中$V = \pi r_k^2$，$r_k$为第$k$个最近邻的距离。实验通过分析不同$k$值（k=1, 3, 5）对密度估计的影响，观察过拟合和欠拟合现象。
+
+\subsection{核心代码实现}
+
+k-NN密度估计的核心代码如下：
+
+\begin{lstlisting}[language=Python]
+def predict(self, X_new, k):
+    densities = []
+    for x in X_new:
+        # 1. 计算距离
+        distances = np.linalg.norm(self.X_train_ - x, axis=1)
+
+        # 2. 排序并找到第k个距离
+        distances_sorted = np.sort(distances)
+        r_k = distances_sorted[k-1]  # 注意: k=1时索引是0
+
+        # 3. 计算体积 (2D情况)
+        volume = np.pi * r_k**2 + self._epsilon
+
+        # 4. 计算密度
+        density = k / (self.N_ * volume)
+
+        densities.append(density)
+
+    return np.array(densities)
+\end{lstlisting}
+
+\textbf{代码分析：}第1行计算待估计点到所有训练样本的欧氏距离，与核密度估计相同。第2-3行对距离排序并提取第$k$个距离$r_k$，注意索引从0开始所以使用k-1。第4行根据二维圆形体积公式$V = \pi r_k^2$计算包含$k$个近邻的区域体积，加epsilon防止除零。第5行应用k-NN密度估计公式$p(x) = k/(N \times V)$计算密度值。与核密度估计不同，k-NN方法固定近邻数$k$，让体积$V$随局部密度自适应变化：密集区域$r_k$小，稀疏区域$r_k$大。
+
+\subsection{实验结果分析}
+
+\begin{figure}[H]
+    \centering
+    \subfigure[数据集1, k=1]{
+        \includegraphics[width=0.48\textwidth]{../out/数据集1_(高分离度)_knn_k1.png}
+    }
+    \subfigure[数据集1, k=5]{
+        \includegraphics[width=0.48\textwidth]{../out/数据集1_(高分离度)_knn_k5.png}
+    }
+    \caption{数据集1（高分离度）不同k值的密度估计对比}
+    \label{fig:exp3_dataset1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \subfigure[数据集2, k=1]{
+        \includegraphics[width=0.48\textwidth]{../out/数据集2_(低分离度)_knn_k1.png}
+    }
+    \subfigure[数据集2, k=5]{
+        \includegraphics[width=0.48\textwidth]{../out/数据集2_(低分离度)_knn_k5.png}
+    }
+    \caption{数据集2（低分离度）不同k值的密度估计对比}
+    \label{fig:exp3_dataset2}
+\end{figure}
+
+从图\ref{fig:exp3_dataset1}可见，高分离度数据集在k=1时呈现明显的过拟合特征。左图显示密度热力图几乎完全是深紫色（低密度），仅在训练样本点处出现极小的亮点，密度范围达到0-450。这是因为k=1时只考虑最近的1个邻居，导致$r_1$非常小，体积$V$趋近于零，在非样本点处密度极低。右图k=5时密度分布变得平滑，在两个聚类中心形成明显的高密度区域（黄绿色），密度范围降至0-0.36，体积增大使密度估计更加稳定。两个类别的密度分布清晰可辨。
+
+图\ref{fig:exp3_dataset2}显示低分离度数据集的密度估计特性。左图k=1时同样出现严重过拟合，密度值仅在样本点处有响应，范围0-45。右图k=5时密度分布平滑，在坐标原点附近形成连续的高密度区域（黄色），密度范围0-0.72。由于两类样本重叠，密度热力图呈现单峰分布，难以区分两个类别中心。对比数据集1的双峰分布，说明k-NN密度估计能够反映数据的真实分布特征。
+
+\subsection{实验结论}
+
+k=1时密度估计在每个样本点形成尖峰，呈现严重过拟合，密度值范围极大（0-450）。k增大时密度分布逐渐平滑，k=5时达到较好的平衡。k-NN方法固定近邻数让体积自适应，与核密度估计固定体积让近邻数自适应形成对比。在密集区域体积小，稀疏区域体积大，这种自适应性使k-NN对不均匀分布的数据更加鲁棒。密度热力图直观展现了数据的分布结构，高分离度数据呈现双峰分布，低分离度数据呈现单峰分布。
+
+\section{实验四：贝叶斯分类器在训练集与测试集上的评估}
+
+\subsection{实验目标}
+
+本实验旨在实现贝叶斯分类器并在训练集和测试集上进行评估。与前三个实验不同，本实验采用训练集-测试集划分策略，将数据按7:3比例划分为训练集（350样本）和测试集（150样本）。实验的核心目标是评估贝叶斯分类器的泛化能力，对比训练错误率和测试错误率，观察模型在未见数据上的表现。
+
+\subsection{核心代码实现}
+
+贝叶斯分类器的核心代码如下：
+
+\begin{lstlisting}[language=Python]
+class GaussianNaiveBayes:
+    def fit(self, X, y):
+        n_samples = X.shape[0]
+        self.classes_ = np.unique(y)
+        n_classes = len(self.classes_)
+        n_features = X.shape[1]
+
+        self.means_ = np.zeros((n_classes, n_features))
+        self.vars_ = np.zeros((n_classes, n_features))
+        self.priors_ = np.zeros(n_classes)
+
+        for idx, c in enumerate(self.classes_):
+            X_c = X[y == c]
+            self.means_[idx] = X_c.mean(axis=0)
+            self.vars_[idx] = X_c.var(axis=0)
+            self.priors_[idx] = X_c.shape[0] / n_samples
+
+    def predict(self, X):
+        log_priors = np.log(self.priors_)
+        log_likelihoods = []
+
+        for idx in range(len(self.classes_)):
+            mean = self.means_[idx]
+            var = self.vars_[idx]
+            log_likelihood = -0.5 * np.sum(np.log(2 * np.pi * var))
+            log_likelihood -= 0.5 * np.sum(((X - mean) ** 2) / var, axis=1)
+            log_likelihoods.append(log_likelihood)
+
+        log_likelihoods = np.array(log_likelihoods).T
+        log_posteriors = log_likelihoods + log_priors
+        return np.argmax(log_posteriors, axis=1)
+\end{lstlisting}
+
+\textbf{代码分析：}fit方法在第8-15行计算每个类别的均值、方差和先验概率。第11-15行遍历每个类别，提取该类别的样本，计算统计量。predict方法在第17-30行实现分类决策。第24-25行计算对数似然$\log p(x|C_i) = -\frac{1}{2}\sum[\log(2\pi\sigma^2) + \frac{(x-\mu)^2}{\sigma^2}]$。第28-29行将对数似然与对数先验相加得到对数后验，选择最大值对应的类别。这个实现与实验一相同，但更加简洁。
+
+\subsection{实验结果分析}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../out/实验四_数据集1_决策边界.png}
+    \caption{数据集1（高分离度）分类结果，训练错误率=0.0086，测试错误率=0.0267}
+    \label{fig:exp4_dataset1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../out/实验四_数据集2_决策边界.png}
+    \caption{数据集2（低分离度）分类结果，训练错误率=0.2429，测试错误率=0.3067}
+    \label{fig:exp4_dataset2}
+\end{figure}
+
+从图\ref{fig:exp4_dataset1}可见，高分离度数据集上训练错误率为0.86\%，测试错误率为2.67\%。图中红色圆点和蓝色方块分别表示训练集和测试集样本，决策边界清晰地将两类分开。黄色叉号标记的4个测试样本被错误分类，这些样本位于决策边界附近的重叠区域。测试错误率略高于训练错误率，差距为1.81个百分点，表明模型具有良好的泛化能力。
+
+图\ref{fig:exp4_dataset2}显示低分离度数据集上训练错误率为24.29\%，测试错误率为30.67\%。图中密集的黄色叉号分布在特征空间的中心区域，约46个测试样本被错误分类。决策边界呈线性形状，但由于两类高度重叠，大量样本处于不确定区域。测试错误率比训练错误率高6.38个百分点，这是正常的泛化差距，说明模型没有出现严重过拟合。
+
+\subsection{实验结论}
+
+通过训练集-测试集划分评估了模型的泛化能力。高分离度数据集的泛化差距为1.81\%，低分离度数据集的泛化差距为6.38\%，均在合理范围内，说明贝叶斯分类器具有较好的泛化性能。与实验一相比，本实验在测试集上错误率略高，这是因为训练样本减少（从500到350）造成的。低分离度数据集的测试错误率（30.67\%）是高分离度（2.67\%）的11.5倍，再次证明数据的内在可分性是决定分类性能的关键因素。
+
+\end{document}

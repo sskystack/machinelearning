@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import make_classification
 import os
 
-plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['font.sans-serif'] = ['Heiti TC', 'STHeiti', 'Arial Unicode MS']
 plt.rcParams['axes.unicode_minus'] = False
 
 
@@ -69,17 +69,17 @@ class MyKNNDensityEstimator:
         densities = []
         for x in X_new:
             # TODO: 1. 计算距离
-            distances = None  # np.linalg.norm(self.X_train_ - x, axis=1)
+            distances = np.linalg.norm(self.X_train_ - x, axis=1)
             
             # TODO: 2. 排序并找到第k个距离
-            distances_sorted = None  # np.sort(distances)
-            r_k = None  # distances_sorted[k-1]  # 注意: k=1时索引是0
+            distances_sorted = np.sort(distances)
+            r_k = distances_sorted[k-1]  # 注意: k=1时索引是0
             
             # TODO: 3. 计算体积 (2D情况)
-            volume = None  # np.pi * r_k**2 + self._epsilon
+            volume = np.pi * r_k**2 + self._epsilon
             
             # TODO: 4. 计算密度
-            density = None  # k / (self.N_ * volume)
+            density = k / (self.N_ * volume)
             
             densities.append(density)
         
