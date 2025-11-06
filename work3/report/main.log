@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.7.2)  6 NOV 2025 11:43
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.7.2)  6 NOV 2025 15:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1454,13 +1454,12 @@ Package fontspec Info:
 (fontspec)             <->"STFangsong/OT:script=hani;language=dflt;"
 
 
-Overfull \hbox (31.12488pt too wide) in paragraph at lines 173--174
-[]\TU/STSong(0)/b/n/10.53937 代 码 分 析：|  \TU/STSong(0)/m/n/10.53937 第 \TU/lmr/m/n/10.53937 1 \TU/STSong(0)/m/n/10.53937 行 调 用 \TU/lmr/m/n/10.53937 _calculate_log_likelihood \TU/STSong(0)/m/n/10.53937 方 法 计 算 每 个 样 本 在 各 类 别 下 的 对 数 似 然 $[] \OML/cmm/m/it/10.53937 P\OT1/cmr/m/n/10.53937 (\OML/cmm/m/it/10.53937 X\OMS/cmsy/m/n/10.53937 j\OML/cmm/m/it/10.53937 C[]\OT1/cmr/m/n/10.53937 )$\TU/STSong(0)/m/n/10.53937 ，|
- []
-
-
 
 [2]
+Overfull \hbox (1.71529pt too wide) in paragraph at lines 201--202
+[]\TU/STSong(0)/m/n/10.53937 第 \TU/lmr/m/n/10.53937 2-3 \TU/STSong(0)/m/n/10.53937 行 通 过 切 片 操 作 提 取 类 别 \TU/lmr/m/n/10.53937 0 \TU/STSong(0)/m/n/10.53937 和 类 别 \TU/lmr/m/n/10.53937 1 \TU/STSong(0)/m/n/10.53937 的 对 数 似 然 向 量。|  第 \TU/lmr/m/n/10.53937 4 \TU/STSong(0)/m/n/10.53937 行 计 算 对 数 似 然 率 $[] \OML/cmm/m/it/10.53937 P\OT1/cmr/m/n/10.53937 (\OML/cmm/m/it/10.53937 X\OMS/cmsy/m/n/10.53937 j\OML/cmm/m/it/10.53937 C[]\OT1/cmr/m/n/10.53937 ) \OMS/cmsy/m/n/10.53937 ^^@
+ []
+
 File: ../out/数据集1_(高分离度)_MAP.png Graphic file (type bmp)
 <../out/数据集1_(高分离度)_MAP.png>
 File: ../out/数据集1_(高分离度)_LRT.png Graphic file (type bmp)
@@ -1490,10 +1489,14 @@ File: ../out/数据集2_(低分离度)_kernel.png Graphic file (type bmp)
 [8]
 File: ../out/数据集1_(高分离度)_knn_k1.png Graphic file (type bmp)
 <../out/数据集1_(高分离度)_knn_k1.png>
+File: ../out/数据集1_(高分离度)_knn_k3.png Graphic file (type bmp)
+<../out/数据集1_(高分离度)_knn_k3.png>
 File: ../out/数据集1_(高分离度)_knn_k5.png Graphic file (type bmp)
 <../out/数据集1_(高分离度)_knn_k5.png>
 File: ../out/数据集2_(低分离度)_knn_k1.png Graphic file (type bmp)
 <../out/数据集2_(低分离度)_knn_k1.png>
+File: ../out/数据集2_(低分离度)_knn_k3.png Graphic file (type bmp)
+<../out/数据集2_(低分离度)_knn_k3.png>
 File: ../out/数据集2_(低分离度)_knn_k5.png Graphic file (type bmp)
 <../out/数据集2_(低分离度)_knn_k5.png>
 
@@ -1501,17 +1504,19 @@ File: ../out/数据集2_(低分离度)_knn_k5.png Graphic file (type bmp)
 [9]
 
 [10]
+
+[11]
 File: ../out/实验四_数据集1_决策边界.png Graphic file (type bmp)
 <../out/实验四_数据集1_决策边界.png>
 File: ../out/实验四_数据集2_决策边界.png Graphic file (type bmp)
 <../out/实验四_数据集2_决策边界.png>
 
 
-[11]
+[12]
 
-[12] 
+[13] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
-runsystem(latexminted cleantemp  --timestamp 20251106114308 FAD58DE7366495DB4650CFEFAC2FCD61)...executed safely (allowed).
+runsystem(latexminted cleantemp  --timestamp 20251106150145 FAD58DE7366495DB4650CFEFAC2FCD61)...executed safely (allowed).
 
 (./main.aux)
  ***********
@@ -1523,15 +1528,15 @@ L3 programming layer <2022/07/14>
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 102AC4B0ABDF4B149D72F816C27BF033;3218.
+(rerunfilecheck)             Checksum: 6CB23BACC81667DB0F3E57705920E429;3278.
  ) 
 Here is how much of TeX's memory you used:
- 50625 strings out of 473832
- 1210196 string characters out of 5729482
- 2186933 words of memory out of 5000000
- 72770 multiletter control sequences out of 15000+600000
+ 50643 strings out of 473832
+ 1210800 string characters out of 5729482
+ 2201930 words of memory out of 5000000
+ 72786 multiletter control sequences out of 15000+600000
  573127 words of font info for 111 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  113i,12n,117p,1058b,1394s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.xdv (13 pages, 256984 bytes).
+Output written on main.xdv (14 pages, 267520 bytes).

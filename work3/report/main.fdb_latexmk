@@ -1,24 +1,26 @@
 # Fdb version 4
-["xdvipdfmx"] 1762400590.029 "main.xdv" "main.pdf" "main" 1762400590.82617 0
-  "main.xdv" 1762400589.95489 256984 6f43346421b4f3866e5959626f4b7268 "xelatex"
+["xdvipdfmx"] 1762412507.30322 "main.xdv" "main.pdf" "main" 1762412508.2622 0
+  "main.xdv" 1762412507.2352 267520 5047931ede3b33ed32f5e3fc6b6abbba "xelatex"
   (generated)
   "main.pdf"
   (rewritten before read)
-["xelatex"] 1762400588.49148 "/Users/zhouzhongtian/vscode/machinelearning/work3/report/main.tex" "main.xdv" "main" 1762400590.82418 0
+["xelatex"] 1762412505.88826 "/Users/zhouzhongtian/vscode/machinelearning/work3/report/main.tex" "main.xdv" "main" 1762412508.2602 0
   "../out/实验四_数据集1_决策边界.png" 1762399861.91296 90730 9c6235ecd08cd80028357b2962f6ccc3 ""
   "../out/实验四_数据集2_决策边界.png" 1762399861.97072 92710 b7ff26fe4a855a66f725e2f18633eee7 ""
   "../out/数据集1_(高分离度)_LRT.png" 1762397473.04953 72465 7df289ab863581c453b8a2f855e46375 ""
   "../out/数据集1_(高分离度)_MAP.png" 1762397473.0027 72845 dfa4c56880c8af98f5a91a5ffdf18c20 ""
   "../out/数据集1_(高分离度)_kernel.png" 1762398935.10737 63961 65728ddf474f9c22efb4f5f10bacf3fa ""
   "../out/数据集1_(高分离度)_knn_k1.png" 1762399113.05519 35237 486bb8c8afb8716879ce0b3b6f6e715d ""
+  "../out/数据集1_(高分离度)_knn_k3.png" 1762399113.16602 43315 59f59d58c7d1b58a49db002bdb9cde33 ""
   "../out/数据集1_(高分离度)_knn_k5.png" 1762399113.2773 56018 f34c025c0cd8f5495cc6a60bfe28f8b8 ""
   "../out/数据集2_(低分离度)_LRT.png" 1762397473.14511 63126 b58eb33d26eeb7a46285c75e170e79dc ""
   "../out/数据集2_(低分离度)_MAP.png" 1762397473.09768 63427 b8f42b08d6657cc750055a21516e0b6b ""
   "../out/数据集2_(低分离度)_kernel.png" 1762398935.23716 65395 aeb1ecfb3beb24ac6646e924d44df52a ""
   "../out/数据集2_(低分离度)_knn_k1.png" 1762399113.3787 36244 26431f7c22f9954e5332700bbb65d044 ""
+  "../out/数据集2_(低分离度)_knn_k3.png" 1762399113.48042 46755 d4b314cb1f726ae416b7f2e832598beb ""
   "../out/数据集2_(低分离度)_knn_k5.png" 1762399113.58131 50535 d000c703910805dda57813cbfdf36a99 ""
   "/System/Library/Fonts/Menlo.ttc" 1746337162 2156036 ec05dfca6821d85440da0899493002c3 ""
-  "/Users/zhouzhongtian/vscode/machinelearning/work3/report/main.tex" 1762400562.19966 23154 c6c71575e195828514215cb63789944b ""
+  "/Users/zhouzhongtian/vscode/machinelearning/work3/report/main.tex" 1762412447.38265 24794 9cb25d65d3a4cd59d0c032453b8abc2c ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
@@ -319,10 +321,10 @@
   "/usr/local/texlive/2025/texmf-var/web2c/xetex/xelatex.fmt" 1751445177 5639816 a26b6ac114fa25e4ab9616ae99ebe75c ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
   "NKU.png" 1762396808.24679 62288 11a2a70f1c661065d0501c58fd223536 ""
-  "main.aux" 1762400589.95367 6736 5a3c0d66384870d86cac045d3a120b47 "xelatex"
-  "main.out" 1762400589.95456 3218 102ac4b0abdf4b149d72f816c27bf033 "xelatex"
-  "main.tex" 1762400562.19966 23154 c6c71575e195828514215cb63789944b ""
-  "main.toc" 1762400589.95485 2397 a9b2c63e3c434ced242db5c8652b4f1e "xelatex"
+  "main.aux" 1762412507.23394 6834 b90201b82d61ea8db2d07575286d61c3 "xelatex"
+  "main.out" 1762412507.23486 3278 6cb23bacc81667db0f3e57705920e429 "xelatex"
+  "main.tex" 1762412447.38265 24794 9cb25d65d3a4cd59d0c032453b8abc2c ""
+  "main.toc" 1762412507.23515 2460 51b9bfa28fd8b175df785d81ce5a59c3 "xelatex"
   "style/ch_xelatex.tex" 1762396808.26163 1857 9a01099fa4c297d47c43e49d4c2d7fdd ""
   "style/scala.tex" 1762396808.2627 1556 0458cab684054ac5f7251677cbf9e729 ""
   (generated)

@@ -20,8 +20,9 @@
 \contentsline {subsection}{\numberline {3.2}核心代码实现}{8}{subsection.3.2}%
 \contentsline {subsection}{\numberline {3.3}实验结果分析}{9}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}实验结论}{10}{subsection.3.4}%
-\contentsline {section}{\numberline {4}实验四：贝叶斯分类器在训练集与测试集上的评估}{10}{section.4}%
-\contentsline {subsection}{\numberline {4.1}实验目标}{10}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}核心代码实现}{10}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}实验结果分析}{11}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}实验结论}{12}{subsection.4.4}%
+\contentsline {section}{\numberline {4}实验四：贝叶斯分类器在训练集与测试集上的评估}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}实验目标}{11}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}核心代码实现}{11}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}实验结果分析}{12}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}实验结论}{13}{subsection.4.4}%
+\contentsline {section}{\numberline {5}总结}{13}{section.5}%

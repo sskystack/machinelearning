@@ -173,13 +173,7 @@ if __name__ == '__main__':
         run_experiment(X1, '数据集1 (高分离度)', k_values, output_dir)
         run_experiment(X2, '数据集2 (低分离度)', k_values, output_dir)
         
-        print('\n' + '='*60)
-        print('实验总结')
-        print('='*60)
-        print('分析:')
-        print('  - k=1: 密度估计尖锐，在数据点处形成尖峰 (过拟合)')
-        print('  - k=3: 密度估计开始平滑')
-        print('  - k=5: 密度估计更加平滑 (可能欠拟合)')
+    
         print('\n实验三完成！')
         
     except (TypeError, AttributeError, ValueError) as e:
