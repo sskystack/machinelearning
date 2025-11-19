@@ -1,12 +1,12 @@
 # Fdb version 4
-["xdvipdfmx"] 1763543382.50906 "main.xdv" "main.pdf" "main" 1763543382.96664 0
-  "main.xdv" 1763543382.43908 231160 cf6fafc657ed1b097792199cd1591bd4 "xelatex"
+["xdvipdfmx"] 1763543520.36173 "main.xdv" "main.pdf" "main" 1763543520.81843 0
+  "main.xdv" 1763543520.29195 233292 2dd6f09236f0ec88b4aa7d29a874d9fd "xelatex"
   (generated)
   "main.pdf"
   (rewritten before read)
-["xelatex"] 1763543381.14789 "/Users/zhouzhongtian/vscode/machinelearning/work4/report/main.tex" "main.xdv" "main" 1763543382.96459 0
+["xelatex"] 1763543518.99889 "/Users/zhouzhongtian/vscode/machinelearning/work4/report/main.tex" "main.xdv" "main" 1763543520.81642 0
   "/System/Library/Fonts/Menlo.ttc" 1746337162 2156036 ec05dfca6821d85440da0899493002c3 ""
-  "/Users/zhouzhongtian/vscode/machinelearning/work4/report/main.tex" 1763543377.63616 22186 201ad434b4f7838eb88836fcbd5a6dd5 ""
+  "/Users/zhouzhongtian/vscode/machinelearning/work4/report/main.tex" 1763543516.05736 22360 433599eb69db582c7f5de47c80e0cb00 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
@@ -307,10 +307,10 @@
   "/usr/local/texlive/2025/texmf-var/web2c/xetex/xelatex.fmt" 1751445177 5639816 a26b6ac114fa25e4ab9616ae99ebe75c ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
   "NKU.png" 1763542778.28632 62288 11a2a70f1c661065d0501c58fd223536 ""
-  "main.aux" 1763543382.43781 5290 13966b88858518e5692438b4515f6d13 "xelatex"
-  "main.out" 1763543382.43869 2323 de66f11aee2e2a1f62b2f73505e4fbf0 "xelatex"
-  "main.tex" 1763543377.63616 22186 201ad434b4f7838eb88836fcbd5a6dd5 ""
-  "main.toc" 1763543382.43901 1662 70e5eb447ef5f16c40c5b482e535246d "xelatex"
+  "main.aux" 1763543520.29068 5422 1c5e802e6bfd728cfee71d0d70ffef6a "xelatex"
+  "main.out" 1763543520.29157 2423 2e9bfe80d84580a4b0315f64ddc36bbf "xelatex"
+  "main.tex" 1763543516.05736 22360 433599eb69db582c7f5de47c80e0cb00 ""
+  "main.toc" 1763543520.29189 1740 4e38e5e8dfabbe294e3f7b27e088de0e "xelatex"
   "roc_curves.png" 1763543110.29993 82730 e0fa1bf726f7a35cdaeb96bf17979003 ""
   "roc_curves_combined.png" 1763543110.30172 64230 2d4f72cf6846e6faff02211e04f7453b ""
   "style/ch_xelatex.tex" 1763542778.30262 1857 9a01099fa4c297d47c43e49d4c2d7fdd ""
