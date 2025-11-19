@@ -1,0 +1,122 @@
+
+================================================================================
+【基础要求】5.1 算法与流程
+================================================================================
+
+① 分层采样结果:
+   训练集大小: 1110 (占比: 69.7%)
+   测试集大小: 483 (占比: 30.3%)
+
+② 高斯朴素贝叶斯分类器:
+   - 核心假设: 特征条件独立，特征服从高斯分布
+   - 先验概率 P(y): 已计算 10 个类别
+   - 高斯参数: 均值 μ 和方差 σ² (每个特征 256 维)
+
+③ 核心步骤:
+   - 训练阶段: 计算先验概率和高斯分布参数 ✓
+   - 预测阶段: 计算后验概率，选择最大的类别 ✓
+
+   训练准确率: 0.7748
+   测试准确率: 0.7536
+
+================================================================================
+【中级要求】6 混淆矩阵 + 精度/召回率/F值
+================================================================================
+
+1. 混淆矩阵 (行=真实类别, 列=预测类别):
+--------------------------------------------------------------------------------
+[[46  0  0  0  1  0  0  0  2  0]
+ [ 0 45  0  0  1  0  0  3  0  0]
+ [ 0 12 33  0  0  0  3  0  0  0]
+ [ 0  5  0 40  0  0  1  2  0  0]
+ [ 0  8  0  0 22  0 15  4  0  0]
+ [ 0  1  0  1  0 31 14  0  0  1]
+ [ 1  1  0  0  0  0 47  0  0  0]
+ [ 0  3  0  1  1  0  2 40  1  0]
+ [ 0 19  0  1  0  0  0  0 27  0]
+ [ 0  3  0  4  3  0  0  0  5 33]]
+
+2. 各类别的精度、召回率、F1值:
+--------------------------------------------------------------------------------
+类别     精度           召回率          F1值         
+--------------------------------------------------------------------------------
+0      0.9787       0.9388       0.9583      
+1      0.4639       0.9184       0.6164      
+2      1.0000       0.6875       0.8148      
+3      0.8511       0.8333       0.8421      
+4      0.7857       0.4490       0.5714      
+5      1.0000       0.6458       0.7848      
+6      0.5732       0.9592       0.7176      
+7      0.8163       0.8333       0.8247      
+8      0.7714       0.5745       0.6585      
+9      0.9706       0.6875       0.8049      
+--------------------------------------------------------------------------------
+平均     0.8211       0.7527       0.7594      
+================================================================================
+
+================================================================================
+【高级要求】7 多分类 ROC 曲线绘制与 AUC 值计算
+================================================================================
+
+1. AUC 值统计:
+--------------------------------------------------------------------------------
+类别     AUC值         性能评价           
+--------------------------------------------------------------------------------
+0      0.9942       优秀             
+1      0.9476       优秀             
+2      0.9722       优秀             
+3      0.9788       优秀             
+4      0.9457       优秀             
+5      0.9943       优秀             
+6      0.9810       优秀             
+7      0.9799       优秀             
+8      0.9241       优秀             
+9      0.9902       优秀             
+--------------------------------------------------------------------------------
+平均     0.9708      
+================================================================================
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:312: UserWarning: Glyph 22810 (\N{CJK UNIFIED IDEOGRAPH-591A}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:312: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:312: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:312: UserWarning: Glyph 26354 (\N{CJK UNIFIED IDEOGRAPH-66F2}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:312: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:313: UserWarning: Glyph 22810 (\N{CJK UNIFIED IDEOGRAPH-591A}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves.png', dpi=100, bbox_inches='tight')
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:313: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves.png', dpi=100, bbox_inches='tight')
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:313: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves.png', dpi=100, bbox_inches='tight')
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:313: UserWarning: Glyph 26354 (\N{CJK UNIFIED IDEOGRAPH-66F2}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves.png', dpi=100, bbox_inches='tight')
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:313: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves.png', dpi=100, bbox_inches='tight')
+
+✓ ROC 曲线已保存到 'roc_curves.png'
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:336: UserWarning: Glyph 22810 (\N{CJK UNIFIED IDEOGRAPH-591A}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:336: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:336: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:336: UserWarning: Glyph 26354 (\N{CJK UNIFIED IDEOGRAPH-66F2}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:336: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  plt.tight_layout()
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:337: UserWarning: Glyph 22810 (\N{CJK UNIFIED IDEOGRAPH-591A}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves_combined.png', dpi=100, bbox_inches='tight')
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:337: UserWarning: Glyph 20998 (\N{CJK UNIFIED IDEOGRAPH-5206}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves_combined.png', dpi=100, bbox_inches='tight')
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:337: UserWarning: Glyph 31867 (\N{CJK UNIFIED IDEOGRAPH-7C7B}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves_combined.png', dpi=100, bbox_inches='tight')
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:337: UserWarning: Glyph 26354 (\N{CJK UNIFIED IDEOGRAPH-66F2}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves_combined.png', dpi=100, bbox_inches='tight')
+/Users/zhouzhongtian/vscode/machinelearning/work4/main.py:337: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  plt.savefig('roc_curves_combined.png', dpi=100, bbox_inches='tight')
+✓ 组合 ROC 曲线已保存到 'roc_curves_combined.png'
+
+================================================================================

@@ -1,0 +1,14 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+[Template] Implement gd\PYGZus{}train(X\PYGZus{}train, y\PYGZus{}train) returning w, b, history.
+Epoch 100/800, MSE: 24.407481
+Epoch 200/800, MSE: 15.633008
+Epoch 300/800, MSE: 8.868065
+Epoch 400/800, MSE: 4.104701
+Epoch 500/800, MSE: 1.341648
+Epoch 600/800, MSE: 0.585134
+Epoch 700/800, MSE: 0.564801
+Epoch 800/800, MSE: 0.564301
+Train MSE: 0.5643
+Test MSE:  0.5765
+Saved figure: outputs/task2\PYGZus{}mse\PYGZus{}curve\PYGZus{}template.png
+\end{MintedVerbatim}
