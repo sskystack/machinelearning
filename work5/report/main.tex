@@ -1,0 +1,582 @@
+\documentclass[a4paper]{article}
+
+\input{style/ch_xelatex.tex}
+\input{style/scala.tex}
+
+%代码段设置
+\lstset{numbers=left,
+basicstyle=\tiny,
+numberstyle=\tiny,
+keywordstyle=\color{blue!70},
+commentstyle=\color{red!50!green!50!blue!50},
+frame=single, rulesepcolor=\color{red!20!green!20!blue!20},
+escapeinside=``
+}
+
+\graphicspath{ {images/} }
+\usepackage{ctex}
+\usepackage{graphicx}
+\usepackage{color,framed}%文本框
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{lastpage}%获得总页数
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{minted}
+\usepackage{graphics}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{pdfpages}
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
+\usepackage{multirow}
+\usepackage{footnote}
+\usepackage{booktabs}
+
+%-----------------------伪代码------------------
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\floatname{algorithm}{Algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\usepackage{lipsum}
+\makeatletter
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+  \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+      {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+      \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+      \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+      \fi
+      \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+  \end{center}
+  }
+\makeatother
+%------------------------代码-------------------
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{
+breaklines,%自动换行
+basicstyle=\small,
+escapeinside=``,
+keywordstyle=\color{ blue!70} \bfseries,
+commentstyle=\color{red!50!green!50!blue!50},%
+stringstyle=\ttfamily,%
+extendedchars=false,%
+linewidth=\textwidth,%
+numbers=left,%
+numberstyle=\tiny \color{blue!50},%
+frame=trbl%
+rulesepcolor= \color{ red!20!green!20!blue!20}
+}
+
+%-------------------------页面边距--------------
+\geometry{a4paper,left=2.3cm,right=2.3cm,top=2.7cm,bottom=2.7cm}
+%-------------------------页眉页脚--------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\kaishu \leftmark}
+% \chead{}
+\rhead{\kaishu 机器学习实验报告}%加粗\bfseries
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0pt}%去掉横线
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}%标题横线
+\newcommand{\HRulegrossa}{\rule{\linewidth}{1.2mm}}
+\setlength{\textfloatsep}{10mm}%设置图片的前后间距
+%--------------------文档内容--------------------
+
+\begin{document}
+\renewcommand{\contentsname}{目\ 录}
+\renewcommand{\appendixname}{附录}
+\renewcommand{\appendixpagename}{附录}
+\renewcommand{\refname}{参考文献}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
+
+%-------------------------封面----------------
+\begin{titlepage}
+    \begin{center}
+    \includegraphics[width=0.8\textwidth]{NKU.png}\\[1cm]
+    \vspace{20mm}
+		\textbf{\huge\textbf{\kaishu{计算机学院}}}\\[0.5cm]
+		\textbf{\huge{\kaishu{机器学习实验报告}}}\\[2.3cm]
+		\textbf{\Huge\textbf{\kaishu{聚类分析}}}
+
+		\vspace{\fill}
+
+    \centering
+    \textsc{\LARGE \kaishu{姓名\ :\ 周重天}}\\[0.5cm]
+    \textsc{\LARGE \kaishu{学号\ :\ 2311082}}\\[0.5cm]
+    \textsc{\LARGE \kaishu{专业\ :\ 计算机科学与技术}}\\[0.5cm]
+
+    \vfill
+    {\Large \today}
+    \end{center}
+\end{titlepage}
+
+\renewcommand {\thefigure}{\thesection{}.{\arabic{figure}}}%图片按章标号
+\renewcommand{\figurename}{图}
+\renewcommand{\contentsname}{目录}
+\cfoot{\thepage\ of \pageref{LastPage}}%当前页 of 总页数
+
+% 生成目录
+\clearpage
+\tableofcontents
+\newpage
+
+\section{实验原理}
+
+\subsection{层次聚类的基本概念}
+层次聚类（Hierarchical Clustering）是一种通过构建树状的聚类结构来进行数据聚类的方法。与K-means等平面聚类不同，层次聚类能够生成一个叫做树状图(dendrogram)的层次化聚类结构，直观展示样本间的聚类关系。
+
+层次聚类的核心思想是逐步合并相距最近的两个簇，直到达到预设的簇个数。其中，不同的簇间距离定义方式会显著影响聚类结果。本实验主要对比以下三种常用的距离度量方式。
+
+\subsection{Single-linkage（单链接）}
+\textbf{定义}：两个簇之间的距离定义为两个簇中最近样本点对之间的距离：
+$$d(C_1, C_2) = \min\{d(a,b) \mid a \in C_1, b \in C_2\}$$
+
+\textbf{特性}：
+\begin{itemize}
+    \item 倾向于产生链式结构，容易形成细长的聚类
+    \item 对离群点敏感，容易受到"桥接"效应的影响
+    \item 可以发现非凸形状的簇，对月牙形数据表现良好
+\end{itemize}
+
+\subsection{Complete-linkage（全链接）}
+\textbf{定义}：两个簇之间的距离定义为两个簇中最远样本点对之间的距离：
+$$d(C_1, C_2) = \max\{d(a,b) \mid a \in C_1, b \in C_2\}$$
+
+\textbf{特性}：
+\begin{itemize}
+    \item 倾向于产生紧凑的、球形的聚类结果
+    \item 对离群点更为敏感，易受外围点影响
+    \item 倾向于产生大小相近的簇
+\end{itemize}
+
+\subsection{Average-linkage（平均链接）}
+\textbf{定义}：两个簇之间的距离定义为两个簇中所有样本点对距离的平均值：
+$$d(C_1, C_2) = \frac{1}{|C_1| \times |C_2|} \sum\sum_{a \in C_1, b \in C_2} d(a,b)$$
+
+\textbf{特性}：
+\begin{itemize}
+    \item 结合了single-linkage和complete-linkage的优点
+    \item 通常比前两者更加稳健
+    \item 对数据的不同分布特征有较好的适应性
+\end{itemize}
+
+\section{基础要求：Single-linkage 与 Complete-linkage 聚类}
+
+\subsection{数据集生成}
+实验使用sklearn库中的\texttt{make\_blobs}函数生成人工数据集，具体参数如下：
+\begin{itemize}
+    \item 样本数：150
+    \item 特征数：2（便于二维可视化）
+    \item 真实簇数：3
+    \item 簇标准差：1.3
+\end{itemize}
+
+\subsubsection{原始数据分布}
+原始数据包含3个高斯分布的簇，它们之间存在适度的间隔和少量重叠。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out_exp5/original_data.png}
+    \caption{原始数据分布（make\_blobs数据集）}
+    \label{fig:original_data}
+\end{figure}
+
+\subsection{Single-linkage 实现与结果}
+
+\subsubsection{核心代码}
+\begin{lstlisting}[language=Python]
+def _single_linkage_distance(self, cluster1, cluster2, dist_matrix):
+    """
+    Single-linkage: 两个簇之间的【最小】距离
+    
+    公式: d(C1, C2) = min{d(a,b) | a∈C1, b∈C2}
+    """
+    min_dist = np.inf
+    
+    # 遍历两个簇中的所有样本对，找最小距离
+    for i in cluster1:
+        for j in cluster2:
+            # 比较并更新最小距离
+            if dist_matrix[i, j] < min_dist:
+                min_dist = dist_matrix[i, j]
+    
+    return min_dist
+\end{lstlisting}
+
+\subsubsection{聚类结果}
+对原始数据应用Single-linkage算法，设置目标簇数 $k=3$。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out_exp5/single_linkage.png}
+    \caption{Single-linkage聚类结果（ARI=-0.0001，Silhouette=0.1418）}
+    \label{fig:single_linkage}
+\end{figure}
+
+\textbf{观察与分析}：
+\begin{itemize}
+    \item 单链接方法的ARI得分极低（-0.0001），表明聚类结果与真实标签的一致性很差
+    \item Silhouette系数仅为0.1418，说明簇的内部紧密度和离散度都不理想
+    \item 从图中可观察到，Single-linkage倾向于产生细长的链式结构，与预期相符
+    \item 该方法对数据中的离群点和噪声敏感，易产生"桥接"效应
+\end{itemize}
+
+\subsection{Complete-linkage 实现与结果}
+
+\subsubsection{核心代码}
+\begin{lstlisting}[language=Python]
+def _complete_linkage_distance(self, cluster1, cluster2, dist_matrix):
+    """
+    Complete-linkage: 两个簇之间的【最大】距离
+    
+    公式: d(C1, C2) = max{d(a,b) | a∈C1, b∈C2}
+    """
+    max_dist = 0
+    
+    # 遍历两个簇中的所有样本对，找最大距离
+    for i in cluster1:
+        for j in cluster2:
+            # 比较并更新最大距离
+            if dist_matrix[i, j] > max_dist:
+                max_dist = dist_matrix[i, j]
+    
+    return max_dist
+\end{lstlisting}
+
+\subsubsection{聚类结果}
+对同一数据集应用Complete-linkage算法，设置目标簇数 $k=3$。
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out_exp5/complete_linkage.png}
+    \caption{Complete-linkage聚类结果（ARI=0.7481，Silhouette=0.5312）}
+    \label{fig:complete_linkage}
+\end{figure}
+
+\textbf{观察与分析}：
+\begin{itemize}
+    \item 完全链接方法的ARI得分为0.7481，远优于Single-linkage
+    \item Silhouette系数为0.5312，表明聚类质量相当不错
+    \item 聚类结果更接近数据的真实分布，三个簇得以正确识别
+    \item Complete-linkage倾向于产生紧凑的、球形的簇，符合理论预期
+    \item 该方法对簇的边界定义更为严格，产生的簇更加均衡
+\end{itemize}
+
+\section{中级要求：Average-linkage 聚类}
+
+\subsection{核心代码}
+\begin{lstlisting}[language=Python]
+def _average_linkage_distance(self, cluster1, cluster2, dist_matrix):
+    """
+    Average-linkage: 两个簇之间的【平均】距离
+    
+    公式: d(C1, C2) = (1/(|C1|×|C2|)) × Σ Σ d(a,b)
+    """
+    total_dist = 0
+    count = 0
+    
+    # 遍历两个簇中的所有样本对，累加距离
+    for i in cluster1:
+        for j in cluster2:
+            # 累加距离并计数
+            total_dist += dist_matrix[i, j]
+            count += 1
+    
+    # 返回平均距离
+    return total_dist / count
+\end{lstlisting}
+
+\subsection{聚类结果}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out_exp5/average_linkage.png}
+    \caption{Average-linkage聚类结果（ARI=0.8332，Silhouette=0.5444）}
+    \label{fig:average_linkage}
+\end{figure}
+
+\textbf{观察与分析}：
+\begin{itemize}
+    \item 平均链接方法的ARI得分为0.8332，是三种方法中最高的
+    \item Silhouette系数为0.5444，略高于Complete-linkage
+    \item 聚类结果与真实标签的对应关系最为理想
+    \item Average-linkage成功结合了Single-linkage和Complete-linkage的优点
+    \item 该方法对边缘样本的划分更加合理，避免了extreme cases的问题
+\end{itemize}
+
+\section{算法对比与结论}
+
+\subsection{定量评估指标对比}
+
+为了全面对比三种链接方式的性能，我们在make\_blobs数据集上分别运行了Single-linkage、Complete-linkage和Average-linkage三种算法，并使用两个重要指标来评估聚类效果：ARI（调整兰德指数）和Silhouette系数。以下表格展示了三种算法的定量评估结果。
+
+\begin{table}[H]
+    \centering
+    \caption{三种链接方式的性能对比（make\_blobs数据集，k=3）}
+    \label{tab:comparison}
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+        \hline
+        \textbf{链接方式} & \textbf{ARI值} & \textbf{Silhouette系数} \\
+        \hline
+        Single-linkage & -0.0001 & 0.1418 \\
+        \hline
+        Complete-linkage & 0.7481 & 0.5312 \\
+        \hline
+        Average-linkage & 0.8332 & 0.5444 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+其中：
+\begin{itemize}
+    \item \textbf{ARI (Adjusted Rand Index)}：衡量聚类结果与真实标签的一致性，值域为[-1, 1]，1表示完全一致
+    \item \textbf{Silhouette系数}：衡量簇的紧密度和分离度，值域为[-1, 1]，越接近1表示聚类质量越好
+\end{itemize}
+
+\subsection{定性分析}
+
+\subsubsection{噪声与离群点的敏感度}
+\begin{itemize}
+    \item \textbf{Single-linkage}：最敏感。容易被少数离群点影响，导致簇被错误地"桥接"，形成链式结构
+    \item \textbf{Complete-linkage}：中等敏感。外围离群点会被强制归入最近的簇，但不会导致严重的链式效应
+    \item \textbf{Average-linkage}：最鲁棒。平均距离的计算方式使单个离群点的影响被分散，整体更加稳定
+\end{itemize}
+
+\subsubsection{簇形状的适应性}
+\begin{itemize}
+    \item \textbf{Single-linkage}：可以发现任意形状的簇，包括非凸、细长的形状，但易产生虚假簇
+    \item \textbf{Complete-linkage}：倾向于发现球形或紧凑的簇，对形状要求较强
+    \item \textbf{Average-linkage}：居中，对各种形状的适应性良好
+\end{itemize}
+
+\subsection{结论}
+在make\_blobs数据集上（球形簇），\textbf{Average-linkage表现最优}，具有最高的ARI和Silhouette评分。该方法成功地：
+\begin{enumerate}
+    \item 正确识别了所有三个簇
+    \item 最小化了错误划分的样本数
+    \item 产生了最为均衡和紧凑的簇结构
+\end{enumerate}
+
+\section{拓展要求：变换聚类簇数k}
+
+\subsection{不同k值下的性能对比}
+
+为了全面理解三种链接方式的性能特征，我们对同一数据集进行了多组实验，改变簇数 $k \in \{2, 3, 4, 5, 6\}$，以观察当聚类簇数偏离数据真实簇数时，各算法的表现变化。结果如下表所示。
+
+\begin{table}[H]
+    \centering
+    \caption{不同k值下三种链接方式的ARI值对比（make\_blobs数据集）}
+    \label{tab:k_values_ari}
+    \begin{tabularx}{\textwidth}{|X|X|X|X|}
+        \hline
+        \textbf{k值} & \textbf{Single-linkage} & \textbf{Complete-linkage} & \textbf{Average-linkage} \\
+        \hline
+        k=2 & 0.0000 & 0.5229 & 0.5584 \\
+        \hline
+        k=3 & -0.0001 & 0.7481 & 0.8332 \\
+        \hline
+        k=4 & 0.0000 & 0.6273 & 0.8246 \\
+        \hline
+        k=5 & 0.0012 & 0.6188 & 0.8143 \\
+        \hline
+        k=6 & 0.0008 & 0.5086 & 0.8164 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{不同k值下三种链接方式的Silhouette系数对比（make\_blobs数据集）}
+    \label{tab:k_values_sil}
+    \begin{tabularx}{\textwidth}{|X|X|X|X|}
+        \hline
+        \textbf{k值} & \textbf{Single-linkage} & \textbf{Complete-linkage} & \textbf{Average-linkage} \\
+        \hline
+        k=2 & 0.3928 & 0.4568 & 0.4593 \\
+        \hline
+        k=3 & 0.1418 & 0.5312 & 0.5444 \\
+        \hline
+        k=4 & -0.0537 & 0.4166 & 0.5290 \\
+        \hline
+        k=5 & -0.2742 & 0.4060 & 0.4577 \\
+        \hline
+        k=6 & -0.3719 & 0.3142 & 0.3588 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\subsection{性能曲线分析}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../out_exp5/performance_comparison.png}
+    \caption{三种链接方式在不同k值下的性能对比曲线}
+    \label{fig:performance_comparison}
+\end{figure}
+
+\subsection{关键观察}
+
+\subsubsection{当k值与真实簇数不一致时的现象}
+
+通过对不同k值的实验分析，我们观察到三种链接方式在聚类簇数偏离真实值时的表现存在显著差异。
+
+当$k=2$时（欠聚类），数据被强行划分为2个簇，而实际上存在3个簇。在这种情况下，Complete-linkage和Average-linkage的性能开始下降，但仍能保持在可接受的水平。Complete-linkage的ARI从最优的0.7481降至0.5229，Average-linkage从0.8332降至0.5584，降幅分别为30\%和33\%。相比之下，Single-linkage的ARI始终保持在0附近，毫无改善。从表\ref{tab:k_values_sil}可以看出，在欠聚类的情况下，三种方法的Silhouette系数都相对较高（在0.39-0.46之间），这是因为强行合并簇通常会产生更紧凑的整体结构。
+
+当$k=3$时（最优），聚类簇数与数据真实簇数一致，所有方法都表现最优。此时Average-linkage达到了最高的ARI值0.8332，Complete-linkage的ARI为0.7481，两者都获得了可接受的Silhouette系数（分别为0.5444和0.5312）。这充分说明了当算法参数与数据真实特性匹配时，才能获得最佳性能。
+
+当$k=4, 5, 6$时（过聚类），数据被过度分割成更多簇。Single-linkage的ARI始终无法有效提升，基本停留在0.0008左右，表现最为糟糕。Complete-linkage的ARI逐步下降，从k=4的0.6273下降到k=6的0.5086，总降幅达到19\%。相比之下，Average-linkage表现最为稳定，ARI始终保持在0.81以上（k=4时为0.8246，k=6时为0.8164），仅下降了0.82\%，远低于其他两种方法。从Silhouette系数来看，所有方法都呈现单调递减趋势，这反映了过度分割带来的负面影响——将紧凑的簇强行拆分会降低簇内的紧密度。
+
+\subsubsection{性能曲线的趋势解析}
+
+从图\ref{fig:performance_comparison}的两条曲线可以看出三种链接方式的不同特征。ARI曲线表明Average-linkage的表现形成了一个钟形分布，在k=3处达到峰值0.8332，向k=2和k=6两端下降，但下降幅度相对温和。Complete-linkage的ARI曲线也在k=3处达到峰值0.7481，但向两端的下降更加陡峭，特别是在过聚类区间（k>3）降速更快。Single-linkage的ARI曲线始终平坦地贴近零线，完全没有利用k值变化的优势，这充分说明该方法在球形簇数据上的根本局限性。
+
+Silhouette曲线的趋势更加一致：所有三种方法都在k=3处达到峰值，之后随着k增加而单调递减。这种单调性表明，过度分割会普遍降低聚类质量，与k值的增加成负相关。值得注意的是，Complete-linkage在k=6时的Silhouette系数（0.3142）甚至低于Single-linkage（虽然Single-linkage的ARI值仍然极低）。
+
+从三条曲线的平缓程度来看，Average-linkage的曲线相对最为平缓，表明该方法在不同k值下的表现较为稳定，容错能力强。Complete-linkage在k<3时尚可，但k>3时快速下降，显示出对簇数变化的敏感性。Single-linkage最为不稳定，ARI基本无变化意味着该方法完全无法适应k值的调整。
+
+\subsection{k值选择的实践意义}
+
+这组实验充分说明了聚类簇数k是一个关键的超参数，其选择直接影响聚类效果。在实际应用中，我们通常不知道数据的真实簇数，因此需要通过以下方式来选择k值：首先使用肘部法则（elbow method）寻找使得某个评价指标变化幅度最大的k值；其次使用轮廓系数（silhouette score）找到簇间分离度最优的k值；第三是基于领域知识预估簇数的合理范围。从本实验的结果看，当k与真实簇数一致时，性能最优，这为我们选择k值提供了重要的指导原则。
+
+值得注意的是，Average-linkage在k值偏离真实值时仍能保持相对较高的性能（ARI下降幅度小于1\%），这使其成为一种更加鲁棒和实用的选择。对于那些无法确定簇数的真实场景，Average-linkage的这种稳定性是一个重要的优势。
+
+\section{额外实验：非凸簇数据集（make\_moons）}
+
+为了深入理解各算法的特性，我们还在非凸形簇数据集上进行了实验。这个额外实验的目的是验证在不同数据分布特征下，三种链接方式的表现是否会发生根本性的改变。
+
+\subsection{数据集说明}
+
+本实验使用sklearn.datasets.make\_moons函数生成数据集。该函数生成的数据包含300个样本，分为2个真实簇，特征数为2。关键特点是数据呈现月牙形（crescent moon）交错排列的非凸形状，传统的基于球形簇假设的聚类算法（如K-means）难以有效处理。这种非凸形状的数据对聚类算法的鲁棒性提出了更高的挑战。
+
+\subsubsection{原始数据分布}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out_exp5_moons/original_data_moons.png}
+    \caption{make\_moons数据集的原始分布}
+    \label{fig:moons_original}
+\end{figure}
+
+\subsection{make\_moons数据集上的聚类结果}
+
+\begin{table}[H]
+    \centering
+    \caption{三种链接方式在make\_moons数据集上的性能对比（k=2）}
+    \label{tab:moons_comparison}
+    \begin{tabularx}{\textwidth}{|X|X|X|}
+        \hline
+        \textbf{链接方式} & \textbf{ARI值} & \textbf{Silhouette系数} \\
+        \hline
+        Single-linkage & 1.0000 & 0.4685 \\
+        \hline
+        Complete-linkage & 0.6823 & 0.4887 \\
+        \hline
+        Average-linkage & 0.5073 & 0.4760 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+\subsubsection{聚类结果可视化}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out_exp5_moons/clustering_single.png}
+    \caption{make\_moons数据集上的Single-linkage聚类结果（ARI=1.0000）}
+    \label{fig:moons_single}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out_exp5_moons/clustering_complete.png}
+    \caption{make\_moons数据集上的Complete-linkage聚类结果（ARI=0.6823）}
+    \label{fig:moons_complete}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../out_exp5_moons/clustering_average.png}
+    \caption{make\_moons数据集上的Average-linkage聚类结果（ARI=0.5073）}
+    \label{fig:moons_average}
+\end{figure}
+
+\subsection{在非凸簇数据上的关键发现}
+
+make\_moons实验的结果令人惊讶，与make\_blobs上的结果形成了鲜明的对比。Single-linkage在这里表现最佳，ARI达到了完美的1.0000！这意味着该算法完全正确地识别了两个月牙形簇，没有任何错误分类。这个结果充分验证了Single-linkage能够发现非凸形状的理论预期。
+
+相比之下，Complete-linkage无法正确处理月牙形簇的非凸特性，ARI仅为0.6823，说明该方法产生的聚类结果与真实标签的一致性较差。这是因为Complete-linkage基于最大距离的定义，倾向于将簇切割成球形，这与数据的实际形状不匹配。Average-linkage表现介于两者之间，ARI为0.5073，说明平均方法对非凸形状的适应性一般，无法像Single-linkage那样充分利用非凸数据的特殊结构。
+
+这个出人意料的结果带来了重要启示：没有"万能"的聚类算法。Single-linkage虽然在球形数据上表现极其糟糕（ARI=-0.0001），但在非凸数据上却是最优的选择（ARI=1.0000）。这充分说明算法的有效性完全取决于数据的特性，不同的数据分布特征需要采用不同的聚类策略。
+
+在实际应用中，通过可视化可以快速判断数据的形状特征（球形 vs 非凸），从而指导算法选择。在不能进行可视化的高维数据上，可以尝试多种链接方式，比较它们的聚类评价指标，选择表现最好的方法。
+
+\subsection{变换k值的拓展分析（make\_moons）}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../out_exp5_moons/performance_comparison.png}
+    \caption{make\_moons数据集上三种链接方式在不同k值下的性能对比}
+    \label{fig:moons_performance}
+\end{figure}
+
+在非凸簇数据集上，当改变k值时出现了有趣的现象。Single-linkage的ARI在k=2时达到1.0，当k增加到3时仅降至0.9868，这体现了其对簇形状而非簇数量的强大适应性。即使被强行要求分出3个簇，Single-linkage仍能保持极高的聚类精度（ARI>0.98），充分说明该方法对非凸形状的理解是根本性的。
+
+Complete-linkage和Average-linkage的ARI则随k增加而逐步下降，从k=2的0.6823和0.5073分别降至k=6的0.3700和0.3619。这说明这两种方法在k>2时无法有效处理非凸形状，过度分割会加重对数据特性的破坏。与make\_blobs数据集相比，make\_moons的最优k值更明显地对应于真实簇数2，这说明非凸簇数据对算法参数的选择更为敏感。
+
+这组对比实验充分说明了在不同数据分布特征下，算法的最优选择会发生180度的转变。这为我们树立了重要的认识：在选择聚类算法时，必须首先进行充分的数据探索和特征分析，不能简单地套用一个"通用"方案。
+
+\section{总结}
+
+\subsection{三种链接方式的优缺点总结}
+
+\begin{table}[H]
+    \centering
+    \caption{三种链接方式的综合对比}
+    \label{tab:summary}
+    \begin{tabularx}{\textwidth}{|X|X|X|X|}
+        \hline
+        \textbf{特性} & \textbf{Single-linkage} & \textbf{Complete-linkage} & \textbf{Average-linkage} \\
+        \hline
+        球形簇表现 & 极差 & 优秀 & 最优 \\
+        \hline
+        非凸簇表现 & 最优 & 差 & 中等 \\
+        \hline
+        离群点敏感性 & 极高 & 中等 & 低 \\
+        \hline
+        链式效应 & 明显 & 无 & 无 \\
+        \hline
+        算法稳定性 & 低 & 中 & 高 \\
+        \hline
+        推荐使用场景 & 非凸或任意形状 & 紧凑球形 & 一般用途 \\
+        \hline
+    \end{tabularx}
+\end{table}
+
+
+\section{附录：代码仓库}
+
+本实验的全部源代码已上传至GitHub仓库：
+
+\textbf{GitHub仓库地址}: \url{https://github.com/sskystack/machinelearning.git}
+
+\end{document}

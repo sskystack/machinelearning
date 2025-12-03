@@ -1,0 +1,41 @@
+\babel@toc {UKenglish}{}\relax 
+\contentsline {section}{\numberline {1}实验原理}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}层次聚类的基本概念}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Single-linkage（单链接）}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Complete-linkage（全链接）}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Average-linkage（平均链接）}{3}{subsection.1.4}%
+\contentsline {section}{\numberline {2}基础要求：Single-linkage 与 Complete-linkage 聚类}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}数据集生成}{4}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}原始数据分布}{4}{subsubsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.2}Single-linkage 实现与结果}{4}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}核心代码}{4}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}聚类结果}{5}{subsubsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.3}Complete-linkage 实现与结果}{5}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}核心代码}{5}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}聚类结果}{6}{subsubsection.2.3.2}%
+\contentsline {section}{\numberline {3}中级要求：Average-linkage 聚类}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}核心代码}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}聚类结果}{8}{subsection.3.2}%
+\contentsline {section}{\numberline {4}算法对比与结论}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}定量评估指标对比}{8}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}定性分析}{9}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}噪声与离群点的敏感度}{9}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}簇形状的适应性}{9}{subsubsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.3}结论}{9}{subsection.4.3}%
+\contentsline {section}{\numberline {5}拓展要求：变换聚类簇数k}{9}{section.5}%
+\contentsline {subsection}{\numberline {5.1}不同k值下的性能对比}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}性能曲线分析}{10}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}关键观察}{10}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}当k值与真实簇数不一致时的现象}{10}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}性能曲线的趋势解析}{11}{subsubsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.4}k值选择的实践意义}{11}{subsection.5.4}%
+\contentsline {section}{\numberline {6}额外实验：非凸簇数据集（make\_moons）}{11}{section.6}%
+\contentsline {subsection}{\numberline {6.1}数据集说明}{11}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}原始数据分布}{12}{subsubsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.2}make\_moons数据集上的聚类结果}{12}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}聚类结果可视化}{13}{subsubsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.3}在非凸簇数据上的关键发现}{14}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}变换k值的拓展分析（make\_moons）}{15}{subsection.6.4}%
+\contentsline {section}{\numberline {7}总结}{15}{section.7}%
+\contentsline {subsection}{\numberline {7.1}三种链接方式的优缺点总结}{15}{subsection.7.1}%
+\contentsline {section}{\numberline {8}附录：代码仓库}{15}{section.8}%

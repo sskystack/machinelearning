@@ -1,0 +1,385 @@
+============================================================
+实验五：层次聚类分析
+============================================================
+
+[步骤1] 生成人工数据集 (make_blobs)...
+  样本数: 150, 特征数: 2
+  真实类别数: 3
+  图片已保存: out_exp5/original_data.png
+
+[步骤2] 基本要求: Single-linkage 和 Complete-linkage
+
+  Single-linkage聚类...
+    ARI: -0.0001
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  图片已保存: out_exp5/single_linkage.png
+
+  Complete-linkage聚类...
+    ARI: 0.7481
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  图片已保存: out_exp5/complete_linkage.png
+
+[步骤3] 中级要求: Average-linkage
+    ARI: 0.8332
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  图片已保存: out_exp5/average_linkage.png
+
+[步骤4] 提高要求: 算法对比 (make_blobs 数据集)
+
+[算法对比]
+------------------------------------------------------------
+linkage         ARI          Silhouette  
+------------------------------------------------------------
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+single          -0.0001      0.1418      
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+complete        0.7481       0.5312      
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+average         0.8332       0.5444      
+------------------------------------------------------------
+
+结论 (make_blobs 数据集):
+  - 在当前数据集上，average-linkage 表现最好
+  - Single-linkage: 容易产生链式效应
+  - Complete-linkage: 倾向于产生紧凑的簇
+  - Average-linkage: 两者的折中
+
+[步骤5] 拓展要求: 测试不同聚类数k (make_blobs 数据集)
+
+[不同聚类数k的性能测试]
+
+k=2:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=0.0000, Silhouette=0.3928
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.5229, Silhouette=0.4568
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.5584, Silhouette=0.4593
+
+k=3:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=-0.0001, Silhouette=0.1418
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.7481, Silhouette=0.5312
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.8332, Silhouette=0.5444
+
+k=4:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=0.0000, Silhouette=-0.0537
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.6273, Silhouette=0.4166
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.8246, Silhouette=0.5290
+
+k=5:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=0.0012, Silhouette=-0.2742
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.6188, Silhouette=0.4060
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.8143, Silhouette=0.4577
+
+k=6:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=0.0008, Silhouette=-0.3719
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.5086, Silhouette=0.3142
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.8164, Silhouette=0.3588
+
+  性能对比图已保存
+
+============================================================
+使用 make_moons 数据集进行层次聚类分析
+============================================================
+
+[moons-1] 生成 make_moons 数据集...
+  样本数: 300, 特征数: 2
+  真实类别数: 2
+  图片已保存: out_exp5_moons/original_data_moons.png
+
+[moons-2] 三种链接方式算法对比 (k=2, make_moons 数据集)
+
+[算法对比]
+------------------------------------------------------------
+linkage         ARI          Silhouette  
+------------------------------------------------------------
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+single          1.0000       0.4685      
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  图片已保存: out_exp5_moons/clustering_single.png
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+complete        0.6823       0.4887      
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  图片已保存: out_exp5_moons/clustering_complete.png
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+average         0.5073       0.4760      
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  图片已保存: out_exp5_moons/clustering_average.png
+------------------------------------------------------------
+
+[moons-3] 拓展: 测试不同聚类数k (make_moons 数据集)
+
+[不同聚类数k的性能测试]
+
+k=2:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=1.0000, Silhouette=0.4685
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.6823, Silhouette=0.4887
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.5073, Silhouette=0.4760
+
+k=3:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=0.9868, Silhouette=0.1394
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.5108, Silhouette=0.4447
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.4057, Silhouette=0.4352
+
+k=4:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=0.9802, Silhouette=-0.1148
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.3453, Silhouette=0.4515
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.5437, Silhouette=0.4860
+
+k=5:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=0.9802, Silhouette=-0.1545
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.3352, Silhouette=0.4589
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.4264, Silhouette=0.5080
+
+k=6:
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  single    : ARI=0.9736, Silhouette=-0.1877
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  complete  : ARI=0.3700, Silhouette=0.4747
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: divide by zero encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: overflow encountered in matmul
+  ret = a @ b
+/opt/anaconda3/envs/paper2poster/lib/python3.10/site-packages/sklearn/utils/extmath.py:203: RuntimeWarning: invalid value encountered in matmul
+  ret = a @ b
+  average   : ARI=0.3619, Silhouette=0.4976
+
+  性能对比图已保存
+
+分析 (make_moons 数据集):
+  - make_moons 数据集为非凸形状簇，更考验聚类算法的鲁棒性
+  - 在 make_moons 数据集上，single-linkage 的 ARI 最高
+  - 可以观察不同链接方式在非球形簇上的优劣
+
+============================================================
+实验完成!
+============================================================
