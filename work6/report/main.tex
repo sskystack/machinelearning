@@ -1,0 +1,880 @@
+\documentclass[a4paper]{article}
+
+\input{style/ch_xelatex.tex}
+\input{style/scala.tex}
+
+%代码段设置
+\lstset{numbers=left,
+basicstyle=\tiny,
+numberstyle=\tiny,
+keywordstyle=\color{blue!70},
+commentstyle=\color{red!50!green!50!blue!50},
+frame=single, rulesepcolor=\color{red!20!green!20!blue!20},
+escapeinside=``
+}
+
+\graphicspath{ {images/} }
+\usepackage{ctex}
+\usepackage{graphicx}
+\usepackage{color,framed}%文本框
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{lastpage}%获得总页数
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{minted}
+\usepackage{graphics}
+\usepackage{subfigure}
+\usepackage{float}
+\usepackage{pdfpages}
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
+\usepackage{multirow}
+\usepackage{footnote}
+\usepackage{booktabs}
+
+%-----------------------伪代码------------------
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\floatname{algorithm}{Algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\usepackage{lipsum}
+\makeatletter
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+  \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+      {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+      \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+      \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+      \fi
+      \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+  \end{center}
+  }
+\makeatother
+%------------------------代码-------------------
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{
+breaklines,%自动换行
+basicstyle=\small,
+escapeinside=``,
+keywordstyle=\color{ blue!70} \bfseries,
+commentstyle=\color{red!50!green!50!blue!50},%
+stringstyle=\ttfamily,%
+extendedchars=false,%
+linewidth=\textwidth,%
+numbers=left,%
+numberstyle=\tiny \color{blue!50},%
+frame=trbl%
+rulesepcolor= \color{ red!20!green!20!blue!20}
+}
+
+%-------------------------页面边距--------------
+\geometry{a4paper,left=2.3cm,right=2.3cm,top=2.7cm,bottom=2.7cm}
+%-------------------------页眉页脚--------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{\kaishu \leftmark}
+% \chead{}
+\rhead{\kaishu 机器学习实验报告}%加粗\bfseries
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0pt}%去掉横线
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}%标题横线
+\newcommand{\HRulegrossa}{\rule{\linewidth}{1.2mm}}
+\setlength{\textfloatsep}{10mm}%设置图片的前后间距
+%--------------------文档内容--------------------
+
+\begin{document}
+\renewcommand{\contentsname}{目\ 录}
+\renewcommand{\appendixname}{附录}
+\renewcommand{\appendixpagename}{附录}
+\renewcommand{\refname}{参考文献}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
+
+%-------------------------封面----------------
+\begin{titlepage}
+    \begin{center}
+    \includegraphics[width=0.8\textwidth]{NKU.png}\\[1cm]
+    \vspace{20mm}
+		\textbf{\huge\textbf{\kaishu{计算机学院}}}\\[0.5cm]
+		\textbf{\huge{\kaishu{机器学习实验报告}}}\\[2.3cm]
+		\textbf{\Huge\textbf{\kaishu{决策分类器实验}}}
+
+		\vspace{\fill}
+
+    \centering
+    \textsc{\LARGE \kaishu{姓名\ :\ 周重天}}\\[0.5cm]
+    \textsc{\LARGE \kaishu{学号\ :\ 2311082}}\\[0.5cm]
+    \textsc{\LARGE \kaishu{专业\ :\ 计算机科学与技术}}\\[0.5cm]
+
+    \vfill
+    {\Large \today}
+    \end{center}
+\end{titlepage}
+
+\renewcommand {\thefigure}{\thesection{}.{\arabic{figure}}}%图片按章标号
+\renewcommand{\figurename}{图}
+\renewcommand{\contentsname}{目录}
+\cfoot{\thepage\ of \pageref{LastPage}}%当前页 of 总页数
+
+% 生成目录
+\clearpage
+\tableofcontents
+\newpage
+
+
+\section{基础任务：ID3 决策树构建与预测（离散属性）}
+
+\subsection{ID3 算法简介}
+
+ID3（Iterative Dichotomiser 3）决策树是由 Ross Quinlan 提出的经典算法，仅适用于离散属性。ID3 使用信息增益作为属性选择准则，通过递归地选择增益最大的属性进行分裂，直至满足停止条件。
+
+ID3 决策树的核心思想是：选择能够最大程度减少数据集不纯性（熵）的属性作为分裂属性。
+
+\subsection{关键算法步骤}
+
+\subsubsection{第一步：信息熵计算}
+
+对于数据集 $S$，信息熵的计算公式为：
+
+\begin{equation}
+H(S) = -\sum_{i=1}^{c} p_i \log_2(p_i)
+\end{equation}
+
+其中 $p_i$ 表示类别 $i$ 在数据集中的比例，$c$ 为类别总数。
+
+本实验中的实现如下：
+
+\begin{lstlisting}[language=Python,caption={信息熵计算}]
+def entropy(self, labels):
+    """计算信息熵 H(S) = -∑ p_i * log2(p_i)"""
+    if len(labels) == 0:
+        return 0.0
+    value_counts = Counter(labels)
+    entropy_val = 0.0
+    total = len(labels)
+    for count in value_counts.values():
+        if count > 0:
+            p = count / total
+            entropy_val -= p * np.log2(p)
+    return entropy_val
+\end{lstlisting}
+
+\subsubsection{第二步：信息增益计算}
+
+对于属性 $A$，其信息增益定义为：
+
+\begin{equation}
+\text{Gain}(S, A) = H(S) - \sum_{v \in \text{Values}(A)} \frac{|S_v|}{|S|} H(S_v)
+\end{equation}
+
+其中 $S_v$ 表示属性 $A$ 取值为 $v$ 的样本子集。
+
+实现代码：
+
+\begin{lstlisting}[language=Python,caption={信息增益计算}]
+def information_gain(self, parent_labels, child_labels_list):
+    """
+    计算信息增益
+    Gain(S, A) = Entropy(S) - ∑ |S_v|/|S| * Entropy(S_v)
+    """
+    parent_entropy = self.entropy(parent_labels)
+    total_samples = len(parent_labels)
+    if total_samples == 0:
+        return 0.0
+    weighted_child_entropy = 0.0
+    for child_labels in child_labels_list:
+        if len(child_labels) > 0:
+            weight = len(child_labels) / total_samples
+            weighted_child_entropy += weight * self.entropy(child_labels)
+    return parent_entropy - weighted_child_entropy
+\end{lstlisting}
+
+\subsubsection{第三步：递归建树}
+
+算法遍历所有离散属性，计算各属性的信息增益，选择增益最大的属性作为当前节点的分裂属性。然后按该属性的不同取值划分样本子集，对每个子集递归调用建树算法。
+
+递归停止条件：
+\begin{enumerate}
+\item 子集中所有样本属于同一类别
+\item 没有可用属性可进行分裂
+\item 子集为空
+\end{enumerate}
+
+核心递归代码片段：
+
+\begin{lstlisting}[language=Python,caption={ID3 递归建树}]
+def build_tree(self, X, y, available_features):
+    node = TreeNode()
+    node.samples = len(y)
+    node.class_distribution = dict(Counter(y))
+    node.majority_class = Counter(y).most_common(1)[0][0] if len(y) > 0 else None
+    
+    # 停止条件 1：标签全相同
+    if len(np.unique(y)) <= 1:
+        node.is_leaf = True
+        node.prediction = y.iloc[0] if len(y) > 0 else None
+        return node
+    
+    # 停止条件 2 和 3：没有属性或子集为空
+    if len(available_features) == 0 or len(X) == 0:
+        node.is_leaf = True
+        node.prediction = node.majority_class
+        return node
+    
+    # 选择最优分裂属性（信息增益最大）
+    best_feature = None
+    best_gain = -1
+    for feature in available_features:
+        feature_values = X[feature].unique()
+        child_labels_list = []
+        for value in feature_values:
+            mask = X[feature] == value
+            child_labels = y[mask]
+            child_labels_list.append(child_labels.values)
+        gain = self.information_gain(y.values, child_labels_list)
+        if gain > best_gain:
+            best_gain = gain
+            best_feature = feature
+    
+    # 递归构建子树
+    remaining_features = [f for f in available_features if f != best_feature]
+    node.feature = best_feature
+    node.children = {}
+    for value in X[best_feature].unique():
+        mask = X[best_feature] == value
+        X_subset = X[mask].reset_index(drop=True)
+        y_subset = y[mask].reset_index(drop=True)
+        node.children[value] = self.build_tree(X_subset, y_subset, remaining_features)
+    return node
+\end{lstlisting}
+
+\subsubsection{代码讲解}
+
+递归建树函数 \texttt{build\_tree} 是 ID3 算法的核心，其执行流程如下：
+
+\begin{enumerate}
+\item \textbf{节点初始化}：创建新的树节点，计算该节点所有样本的多数类。这用于处理无法完全分裂的情况下的默认预测。
+
+\item \textbf{停止条件检查}：
+\begin{itemize}
+    \item 若所有样本标签相同（\texttt{len(np.unique(y)) <= 1}），则该节点是纯净的，无需继续分裂，直接创建叶子节点。
+    \item 若没有可用属性（\texttt{len(available\_features) == 0}）或样本子集为空，也无法继续分裂，创建叶子节点并使用多数类作为预测。
+\end{itemize}
+
+\item \textbf{属性选择}：遍历所有可用属性，对每个属性计算其信息增益。具体步骤为：
+\begin{itemize}
+    \item 获取该属性的所有不同取值（\texttt{X[feature].unique()}）
+    \item 按各取值将样本分组，构建子集标签列表
+    \item 调用 \texttt{information\_gain} 方法计算该属性的增益
+    \item 记录增益最大的属性作为最优分裂属性
+\end{itemize}
+
+\item \textbf{递归分裂}：选定最优分裂属性后，按该属性的每个不同取值创建子分支。对于每个分支：
+\begin{itemize}
+    \item 使用布尔掩码 \texttt{mask} 筛选出满足该属性值的样本
+    \item 从可用属性集合中移除已分裂的属性（\texttt{remaining\_features}）
+    \item 递归调用 \texttt{build\_tree} 构建子树
+\end{itemize}
+
+\end{enumerate}
+
+\subsection{实验结果}
+
+使用 Watermelon-train1.csv（纯离散属性）训练 ID3 决策树，对 Watermelon-test1.csv 进行预测。
+
+\textbf{测试集结果：}
+
+\begin{table}[H]
+\centering
+\caption{ID3 决策树在 test1 上的性能}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{指标} & \textbf{值} \\
+\hline
+训练集样本数 & 16 \\
+\hline
+测试集样本数 & 10 \\
+\hline
+特征维数 & 5 \\
+\hline
+分类精度 & 0.70 (70\%) \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{fig/ID3.png}
+\caption{ID3 决策树实验运行结果}
+\label{fig:id3_result}
+\end{figure}
+
+\subsection{关键代码：预测函数}
+
+\begin{lstlisting}[language=Python,caption={ID3 预测}]
+def predict_one(self, x):
+    """预测单个样本"""
+    node = self.tree
+    while not node.is_leaf:
+        feature = node.feature
+        feature_value = x.get(feature, None)
+        # 如果特征值不在子节点中，使用多数类回退
+        if feature_value not in node.children:
+            return node.majority_class
+        node = node.children[feature_value]
+    return node.prediction
+\end{lstlisting}
+
+\section{中级要求：C4.5 决策树构建与预测}
+
+\subsection{C4.5 算法改进简介}
+
+C4.5 是对 ID3 的重要改进，主要区别在于：
+
+\begin{enumerate}
+\item 支持连续属性的处理
+\item 使用信息增益率代替信息增益，避免对多值属性的偏向
+\end{enumerate}
+
+\subsection{连续属性处理方法}
+
+对于连续属性，C4.5 采用如下策略：
+
+将属性值从小到大排序，相邻两个不同值的中点作为候选分裂阈值。对每个阈值，将数据分为两部分：$A \leq t$ 和 $A > t$。
+
+\begin{lstlisting}[language=Python,caption={连续属性最优阈值寻找}]
+def find_best_continuous_split(self, X_col, y, feature_name):
+    """
+    为连续属性寻找最优分裂阈值
+    候选阈值：排序后相邻不同值的中点
+    """
+    X_col_sorted = sorted(set(X_col.values))
+    if len(X_col_sorted) <= 1:
+        return None, -1
+    thresholds = []
+    for i in range(len(X_col_sorted) - 1):
+        threshold = (X_col_sorted[i] + X_col_sorted[i + 1]) / 2
+        thresholds.append(threshold)
+    best_threshold = None
+    best_gain_ratio = -1
+    for threshold in thresholds:
+        left_mask = X_col <= threshold
+        right_mask = X_col > threshold
+        y_left = y[left_mask]
+        y_right = y[right_mask]
+        if len(y_left) == 0 or len(y_right) == 0:
+            continue
+        child_labels_list = [y_left.values, y_right.values]
+        gain_ratio = self.information_gain_ratio(y.values, child_labels_list)
+        if gain_ratio > best_gain_ratio:
+            best_gain_ratio = gain_ratio
+            best_threshold = threshold
+    return best_threshold, best_gain_ratio
+\end{lstlisting}
+
+\subsubsection{代码讲解}
+
+连续属性处理是 C4.5 相比 ID3 的关键改进。\texttt{find\_best\_continuous\_split} 函数的核心思想是：
+
+\begin{enumerate}
+\item \textbf{候选阈值生成}：对属性值进行排序并提取唯一值。相邻两个不同值的中点被作为候选分裂阈值。例如，若排序后的唯一值为 $[0.5, 0.7, 0.9]$，则候选阈值为 $[0.6, 0.8]$。这种方式能有效减少阈值的搜索空间。
+
+\item \textbf{阈值评估}：对每个候选阈值，将数据分为两部分：$X \leq \text{threshold}$ 和 $X > \text{threshold}$。计算此二分裂下的信息增益率。
+
+\item \textbf{最优阈值选择}：在所有有效的二分裂中（两部分都非空），选择能最大化增益率的阈值。
+
+\end{enumerate}
+
+相比穷举所有可能的分裂点，该方法大大降低了计算复杂度，同时保留了充分的表达能力。
+
+\subsection{信息增益率}
+
+为避免 ID3 对多值属性的偏向，C4.5 引入信息增益率：
+
+\begin{equation}
+\text{GainRatio}(S, A) = \frac{\text{Gain}(S, A)}{\text{SplitInfo}(S, A)}
+\end{equation}
+
+其中分裂信息定义为：
+
+\begin{equation}
+\text{SplitInfo}(S, A) = -\sum_{v \in \text{Values}(A)} \frac{|S_v|}{|S|} \log_2 \frac{|S_v|}{|S|}
+\end{equation}
+
+\begin{lstlisting}[language=Python,caption={C4.5 信息增益率}]
+def information_gain_ratio(self, parent_labels, child_labels_list):
+    """
+    计算信息增益率
+    GainRatio(S, A) = Gain(S, A) / SplitInfo(S, A)
+    """
+    parent_entropy = self.entropy(parent_labels)
+    total_samples = len(parent_labels)
+    if total_samples == 0:
+        return 0.0
+    weighted_child_entropy = 0.0
+    child_sizes = []
+    for child_labels in child_labels_list:
+        child_sizes.append(len(child_labels))
+        if len(child_labels) > 0:
+            weight = len(child_labels) / total_samples
+            weighted_child_entropy += weight * self.entropy(child_labels)
+    gain = parent_entropy - weighted_child_entropy
+    split_info = self.split_info(child_sizes)
+    if split_info == 0:
+        return 0.0
+    gain_ratio = gain / split_info
+    return gain_ratio
+\end{lstlisting}
+
+\subsubsection{代码讲解}
+
+信息增益率是对信息增益的改进，解决了 ID3 对多值属性的偏好问题。代码实现流程如下：
+
+\begin{enumerate}
+\item \textbf{基础增益计算}：首先计算属性分裂前的熵（\texttt{parent\_entropy}），然后计算分裂后各子集的加权熵，二者之差即为原始的信息增益。
+
+\item \textbf{分裂信息计算}：\texttt{split\_info} 方法计算分裂信息，其值随着分支数增加而增加。多值属性会产生较大的分裂信息。
+
+\item \textbf{增益率归一化}：通过将增益除以分裂信息，使得多值属性的增益被压低，避免算法过度偏好多值属性。这是 C4.5 相比 ID3 的根本改进。
+
+\item \textbf{边界处理}：当分裂信息为 0（即所有分支大小都相等且只有一个分支）时，避免除以零的错误。
+
+\end{enumerate}
+
+在实践中，信息增益率能产生更平衡的决策树，对未见过的数据有更好的泛化能力。
+
+\subsection{实验结果}
+
+使用 Watermelon-train2.csv（离散+连续属性混合）训练 C4.5 决策树，对 Watermelon-test2.csv 进行预测。
+
+\begin{table}[H]
+\centering
+\caption{C4.5 决策树在 test2 上的性能}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{指标} & \textbf{值} \\
+\hline
+训练集样本数 & 17 \\
+\hline
+测试集样本数 & 5 \\
+\hline
+特征维数 & 6 \\
+\hline
+其中连续属性数 & 2 \\
+\hline
+分类精度 & 0.60 (60\%) \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{fig/C4.5.png}
+\caption{C4.5 决策树实验运行结果}
+\label{fig:c45_result}
+\end{figure}
+
+\section{C4.5 算法属性处理过程}
+
+\subsection{属性类型自动识别}
+
+C4.5 利用 pandas 的 \texttt{is\_numeric\_dtype} 函数自动识别连续属性：
+
+\begin{lstlisting}[language=Python,caption={属性类型自动识别}]
+def fit(self, X, y):
+    """训练 C4.5 决策树"""
+    self.feature_names = X.columns.tolist()
+    self.class_label = y.name if y.name else "label"
+    # 自动识别连续属性
+    from pandas.api.types import is_numeric_dtype
+    for col in self.feature_names:
+        if is_numeric_dtype(X[col]):
+            self.continuous_features.add(col)
+    available_features = [f for f in self.feature_names]
+    self.tree = self.build_tree(X.reset_index(drop=True), 
+                                y.reset_index(drop=True), 
+                                available_features)
+    return self
+\end{lstlisting}
+
+\subsubsection{代码讲解}
+
+属性类型自动识别是 C4.5 实现的重要细节，使得算法能自动适应混合属性数据集：
+
+\begin{enumerate}
+\item \textbf{属性收集}：\texttt{fit} 方法首先提取数据集的所有特征列名，保存在 \texttt{feature\_names} 中。
+
+\item \textbf{类型识别}：使用 pandas 库的 \texttt{is\_numeric\_dtype} 函数检查每个特征列的数据类型。若为数值型（int、float 等），则标记为连续属性，加入 \texttt{continuous\_features} 集合；否则视为离散属性。
+
+\item \textbf{差异化处理}：在建树过程中，当遍历特征选择最优分裂属性时，会针对特征类型采用不同策略：
+\begin{itemize}
+    \item 连续特征：调用 \texttt{find\_best\_continuous\_split} 寻找最优二分阈值
+    \item 离散特征：枚举所有不同取值，按值进行多路分裂
+\end{itemize}
+
+\item \textbf{用户友好性}：自动识别机制让用户无需手动预处理数据，直接传入混合属性数据集即可。相比 ID3 需要预先离散化连续属性，C4.5 更加易用。
+
+\end{enumerate}
+
+\section{高级要求：CART 决策树构建与预测}
+
+\subsection{CART 算法简介}
+
+CART（Classification And Regression Tree）由 Breiman 等人提出。CART 的主要特点：
+
+\begin{enumerate}
+\item 总是生成二叉树结构
+\item 使用基尼指数（Gini Index）作为分裂准则
+\item 支持离散和连续属性
+\end{enumerate}
+
+\subsection{基尼指数}
+
+对数据集 $D$，基尼指数定义为：
+
+\begin{equation}
+\text{Gini}(D) = 1 - \sum_{k=1}^{c} p_k^2
+\end{equation}
+
+其中 $p_k$ 是类别 $k$ 在数据集中的比例。基尼指数反映数据集的不纯度。
+
+\subsection{CART 建树算法}
+
+CART 对连续属性和离散属性都采用二分策略。对于离散属性，每个节点分裂为"取值为 $v$"和"取值不为 $v$"两个分支。
+
+\begin{lstlisting}[language=Python,caption={CART 基尼指数计算}]
+def gini_index(self, labels):
+    """计算基尼指数 Gini(D) = 1 - ∑ p_k^2"""
+    if len(labels) == 0:
+        return 0.0
+    value_counts = Counter(labels)
+    gini = 1.0
+    total = len(labels)
+    for count in value_counts.values():
+        if count > 0:
+            p = count / total
+            gini -= p * p
+    return gini
+
+def weighted_gini(self, left_labels, right_labels):
+    """计算二分后的加权基尼指数"""
+    total = len(left_labels) + len(right_labels)
+    if total == 0:
+        return 0.0
+    left_weight = len(left_labels) / total
+    right_weight = len(right_labels) / total
+    return (left_weight * self.gini_index(left_labels) + 
+            right_weight * self.gini_index(right_labels))
+\end{lstlisting}
+
+\subsubsection{代码讲解}
+
+CART 使用基尼指数作为分裂准则，相比信息论方法具有计算优势。代码涵盖两个关键函数：
+
+\begin{enumerate}
+\item \textbf{基尼指数计算}（\texttt{gini\_index}）：
+\begin{itemize}
+    \item 遍历数据集中各类别，计算每类的比例 $p_k$
+    \item 基尼指数定义为 $Gini(D) = 1 - \sum_{k=1}^{c} p_k^2$，体现数据的不纯度
+    \item 当数据集只包含一个类别时，基尼指数为 0（纯净）；当各类比例相等时，基尼指数最大
+\end{itemize}
+
+\item \textbf{加权基尼指数}（\texttt{weighted\_gini}）：
+\begin{itemize}
+    \item 对于二分裂，分别计算左右两个子集的基尼指数
+    \item 按子集大小比例进行加权求和
+    \item 公式为：$Gini_{split} = \frac{|L|}{|D|} \cdot Gini(L) + \frac{|R|}{|D|} \cdot Gini(R)$
+    \item 在寻找最优分裂时，选择能最小化加权基尼指数的分裂点
+\end{itemize}
+
+\end{enumerate}
+
+CART 的二分策略（每次只分裂成两个分支）使得树的结构更规则，易于剪枝和理解。虽然可能导致树深度较深，但通过剪枝可以获得更优的复杂度-精度平衡。
+
+\subsection{实验结果}
+
+使用相同的 Watermelon-train2.csv 训练 CART 决策树。
+
+\begin{table}[H]
+\centering
+\caption{CART 决策树在 test2 上的性能}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{指标} & \textbf{值} \\
+\hline
+训练集样本数 & 17 \\
+\hline
+测试集样本数 & 5 \\
+\hline
+特征维数 & 6 \\
+\hline
+树结构 & 二叉树 \\
+\hline
+分类精度 & 0.60 (60\%) \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{fig/CART.png}
+\caption{CART 决策树实验运行结果}
+\label{fig:cart_result}
+\end{figure}
+
+\section{高级要求：决策树剪枝}
+
+\subsection{剪枝算法选择：简化后剪枝（REP）}
+
+本实验采用简化后剪枝（Reduced Error Pruning, REP）算法。REP 是一种后剪枝方法，通过在验证集上评估剪枝效果来决定是否进行剪枝。
+
+\subsection{REP 算法流程}
+
+\begin{enumerate}
+\item 从训练集中随机分出 20\% 作为验证集（random\_state=42 保证可复现性）
+\item 在较小的训练集上重新训练决策树
+\item 对每个内部节点，尝试将其替换为叶子（预测为该节点的多数类）
+\item 若替换后验证集精度不下降，则保留该剪枝操作
+\item 自底向上重复第 3、4 步，直到无法继续剪枝
+\end{enumerate}
+
+\begin{lstlisting}[language=Python,caption={简化后剪枝实现}]
+def reduced_error_pruning(tree_model, X_valid, y_valid):
+    """
+    简化后剪枝 (Reduced Error Pruning, REP)
+    """
+    def calculate_accuracy(model, X, y):
+        predictions = model.predict(X)
+        return np.mean(predictions == y.values)
+    
+    def prune_node(node, X_valid, y_valid, model):
+        """递归剪枝"""
+        if node.is_leaf:
+            return False
+        # 先对所有子节点尝试剪枝
+        any_pruned = False
+        for child in node.children.values():
+            if prune_node(child, X_valid, y_valid, model):
+                any_pruned = True
+        # 计算剪枝前的精度
+        acc_before = calculate_accuracy(model, X_valid, y_valid)
+        # 尝试将当前节点替换为叶子
+        old_is_leaf = node.is_leaf
+        old_prediction = node.prediction
+        old_feature = node.feature
+        old_children = node.children
+        node.is_leaf = True
+        node.prediction = node.majority_class
+        node.feature = None
+        node.children = {}
+        # 计算剪枝后的精度
+        acc_after = calculate_accuracy(model, X_valid, y_valid)
+        # 如果精度没有下降，保留剪枝
+        if acc_after >= acc_before:
+            return True
+        else:
+            # 恢复原状
+            node.is_leaf = old_is_leaf
+            node.prediction = old_prediction
+            node.feature = old_feature
+            node.children = old_children
+            return any_pruned
+    
+    for _ in range(100):  # 最多迭代 100 次
+        if not prune_node(tree_model.tree, X_valid, y_valid, tree_model):
+            break
+    return tree_model
+\end{lstlisting}
+
+\subsubsection{代码讲解}
+
+简化后剪枝（REP）通过在验证集上的精度变化来指导剪枝决策。实现原理如下：
+
+\begin{enumerate}
+\item \textbf{验证集分离}：在调用剪枝前，通常从训练集中分出 20\% 作为验证集（通过 \texttt{np.random.choice}）。验证集用于评估剪枝效果，不参与树的构建。
+
+\item \textbf{递归剪枝流程}（\texttt{prune\_node} 函数）：
+\begin{itemize}
+    \item 若节点是叶子，无需剪枝，直接返回
+    \item 否则，先对所有子节点递归尝试剪枝，自底向上进行
+    \item 对当前节点，记录原始状态（\texttt{old\_*} 变量）
+    \item 尝试将节点替换为叶子（预测为该节点的多数类），临时改变节点属性
+    \item 在验证集上计算替换前后的精度（\texttt{acc\_before} 和 \texttt{acc\_after}）
+    \item 若替换后精度不下降，则保留剪枝；否则恢复原状
+\end{itemize}
+
+\item \textbf{迭代优化}：外层循环最多迭代 100 次，每次调用 \texttt{prune\_node}。只要还有节点被成功剪枝，就继续迭代。当某次迭代无任何剪枝发生，算法停止。
+
+\item \textbf{关键特性}：
+\begin{itemize}
+    \item REP 是后剪枝方法，先构建完整的树再剪枝，避免过早停止导致信息丧失
+    \item 使用独立的验证集而非训练集评估剪枝效果，更客观地反映泛化能力
+    \item 自底向上的递归策略确保了剪枝的系统性和一致性
+\end{itemize}
+
+\end{enumerate}
+
+\subsection{剪枝实施结果}
+
+\subsubsection{ID3 树的剪枝}
+
+\begin{table}[H]
+\centering
+\caption{ID3 决策树剪枝前后对比}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{指标} & \textbf{剪枝前} & \textbf{剪枝后} & \textbf{变化} \\
+\hline
+测试集精度 & 0.60 & 0.50 & $-0.10$ \\
+\hline
+节点数 & 14 & 1 & $-13$ \\
+\hline
+树深度 & 1 & 0 & $-1$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{C4.5 树的剪枝}
+
+\begin{table}[H]
+\centering
+\caption{C4.5 决策树剪枝前后对比}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{指标} & \textbf{剪枝前} & \textbf{剪枝后} & \textbf{变化} \\
+\hline
+测试集精度 & 0.60 & 0.60 & $0.00$ \\
+\hline
+节点数 & 3 & 3 & $0$ \\
+\hline
+树深度 & 1 & 1 & $0$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{CART 树的剪枝}
+
+\begin{table}[H]
+\centering
+\caption{CART 决策树剪枝前后对比}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{指标} & \textbf{剪枝前} & \textbf{剪枝后} & \textbf{变化} \\
+\hline
+测试集精度 & 0.60 & 0.60 & $0.00$ \\
+\hline
+节点数 & 3 & 3 & $0$ \\
+\hline
+树深度 & 1 & 1 & $0$ \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{剪枝分析}
+
+ID3 树的剪枝导致精度下降，说明该模型在验证集上的最优结构保留了所有节点。而 C4.5 和 CART 在剪枝前已经相对简洁，没有进一步的优化空间。这表明对于 Watermelon 数据集，原始的 C4.5 和 CART 模型已经具有良好的泛化能力。
+
+
+\section{扩展要求：三种决策树算法比较分析}
+
+\subsection{维度一：分裂准则}
+
+\begin{table}[H]
+\centering
+\caption{三种算法的分裂准则对比}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{算法} & \textbf{分裂准则} & \textbf{公式} & \textbf{特点} \\
+\hline
+ID3 & 信息增益 & $\text{Gain}(S,A) = H(S) - \sum_v \frac{|S_v|}{|S|}H(S_v)$ & 偏向多值属性 \\
+\hline
+C4.5 & 信息增益率 & $\text{GainRatio}(S,A) = \frac{\text{Gain}(S,A)}{\text{SplitInfo}(S,A)}$ & 消除多值偏向 \\
+\hline
+CART & 基尼指数 & $\text{Gini}(D) = 1 - \sum_k p_k^2$ & 计算简便 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{维度二：树结构}
+
+\begin{table}[H]
+\centering
+\caption{三种算法的树结构对比}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{算法} & \textbf{树结构类型} & \textbf{分裂策略} & \textbf{优缺点} \\
+\hline
+ID3 & 多叉树 & 多路分裂 & 结构紧凑，易理解；剪枝困难 \\
+\hline
+C4.5 & 多叉树 & 多路分裂 & 继承 ID3；支持连续属性 \\
+\hline
+CART & 二叉树 & 二分 & 易剪枝，规则明确；树可能较深 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{维度三：属性处理能力}
+
+\begin{table}[H]
+\centering
+\caption{三种算法的属性处理对比}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{算法} & \textbf{离散属性} & \textbf{连续属性} & \textbf{自动识别} \\
+\hline
+ID3 & \checkmark 原生支持 & \texttimes 需预处理 & \texttimes \\
+\hline
+C4.5 & \checkmark 原生支持 & \checkmark 自动二分 & \checkmark \\
+\hline
+CART & \checkmark 二分处理 & \checkmark 自动二分 & \checkmark \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{算法选择建议}
+
+\begin{enumerate}
+\item \textbf{ID3}：适用于纯离散属性数据集，数据规模较小，属性值有限的场景。优点是算法简洁高效，缺点是不支持连续属性。
+
+\item \textbf{C4.5}：适用于混合属性数据集，属性数较多，类标签多的场景。通过增益率解决了 ID3 的多值偏向问题，扩展了连续属性支持。
+
+\item \textbf{CART}：适用于生产环境，需要回归扩展的场景。二叉树结构易于剪枝和理解，基尼指数计算更快。
+
+\end{enumerate}
+
+\subsection{本实验观察}
+
+在 Watermelon 数据集上，三种算法在 test2 上的精度都达到 0.60。C4.5 和 CART 都能有效处理连续属性（密度、含糖量等），而 ID3 仅限于离散属性。从模型复杂度看，C4.5 和 CART 生成的树都比较简洁（3 个节点），具有较好的泛化能力。
+
+\section{附录：代码仓库}
+
+本实验的全部源代码已上传至 GitHub 仓库：
+
+\textbf{GitHub 仓库地址}: \url{https://github.com/sskystack/machinelearning.git}
+
+源代码文件：\texttt{work6/exp\_6.py}
+
+
+
+\end{document}
