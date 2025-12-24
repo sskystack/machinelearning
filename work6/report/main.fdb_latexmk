@@ -1,12 +1,12 @@
 # Fdb version 4
-["xdvipdfmx"] 1765962233.85635 "main.xdv" "main.pdf" "main" 1765962234.2799 0
-  "main.xdv" 1765962233.78254 374560 4503112df22889d7e454ac51a6d8ade6 "xelatex"
+["xdvipdfmx"] 1766561031.75659 "main.xdv" "main.pdf" "main" 1766561032.14773 0
+  "main.xdv" 1766561031.68911 373804 23b2ffa07d9d19ed68d87971678d32cc "xelatex"
   (generated)
   "main.pdf"
   (rewritten before read)
-["xelatex"] 1765962232.38261 "/Users/zhouzhongtian/vscode/machinelearning/work6/report/main.tex" "main.xdv" "main" 1765962234.27793 0
+["xelatex"] 1766561030.12855 "/Users/zhouzhongtian/vscode/machinelearning/work6/report/main.tex" "main.xdv" "main" 1766561032.14587 0
   "/System/Library/Fonts/Menlo.ttc" 1746337162 2156036 ec05dfca6821d85440da0899493002c3 ""
-  "/Users/zhouzhongtian/vscode/machinelearning/work6/report/main.tex" 1765962226.65168 30290 de489658dae8676c2b80aa68b225ce1d ""
+  "/Users/zhouzhongtian/vscode/machinelearning/work6/report/main.tex" 1766561027.00448 29930 1108689eb056b97fb1dfd77cf2d2e4fd ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
@@ -310,10 +310,10 @@
   "fig/C4.5.png" 1765962074.13872 24746 bd0e2712c22739b8a7fe9b615d69d905 ""
   "fig/CART.png" 1765962090.66689 25147 c3e74785c2596fe172bc0cc21cba2d5c ""
   "fig/ID3.png" 1765962004.22187 27593 e559c9b1dba46d4ae60e54cdf5266119 ""
-  "main.aux" 1765962233.78117 9294 5c839cc34a92b1c59bf775f741ff3f43 "xelatex"
-  "main.out" 1765962233.78217 4986 53396d9f8e6ee0b04fc1540b601797e8 "xelatex"
-  "main.tex" 1765962226.65168 30290 de489658dae8676c2b80aa68b225ce1d ""
-  "main.toc" 1765962233.7825 3719 2b43b15e79726be028369c85b2f934c5 "xelatex"
+  "main.aux" 1766561031.68758 9287 b90afb031b012ec4793b9a8f1f87f1d1 "xelatex"
+  "main.out" 1766561031.68875 4970 9ab680341a1188d9ccb2d57c03114d06 "xelatex"
+  "main.tex" 1766561027.00448 29930 1108689eb056b97fb1dfd77cf2d2e4fd ""
+  "main.toc" 1766561031.68905 3712 d6dc2080e8b76d45353e8713ab0e1f4c "xelatex"
   "style/ch_xelatex.tex" 1765959588.75102 1857 9a01099fa4c297d47c43e49d4c2d7fdd ""
   "style/scala.tex" 1765959588.75198 1556 0458cab684054ac5f7251677cbf9e729 ""
   (generated)

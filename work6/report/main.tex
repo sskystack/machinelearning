@@ -271,33 +271,13 @@ def build_tree(self, X, y, available_features):
 
 \subsubsection{代码讲解}
 
-递归建树函数 \texttt{build\_tree} 是 ID3 算法的核心，其执行流程如下：
+递归建树函数 \texttt{build\_tree} 是 ID3 算法的核心。首先，函数进行节点初始化，创建新的树节点，计算该节点所有样本的多数类。这用于处理无法完全分裂的情况下的默认预测。
 
-\begin{enumerate}
-\item \textbf{节点初始化}：创建新的树节点，计算该节点所有样本的多数类。这用于处理无法完全分裂的情况下的默认预测。
+接下来进行停止条件检查。若所有样本标签相同（\texttt{len(np.unique(y)) <= 1}），则该节点是纯净的，无需继续分裂，直接创建叶子节点。若没有可用属性（\texttt{len(available\_features) == 0}）或样本子集为空，也无法继续分裂，此时创建叶子节点并使用多数类作为预测。
 
-\item \textbf{停止条件检查}：
-\begin{itemize}
-    \item 若所有样本标签相同（\texttt{len(np.unique(y)) <= 1}），则该节点是纯净的，无需继续分裂，直接创建叶子节点。
-    \item 若没有可用属性（\texttt{len(available\_features) == 0}）或样本子集为空，也无法继续分裂，创建叶子节点并使用多数类作为预测。
-\end{itemize}
+属性选择阶段遍历所有可用属性，对每个属性计算其信息增益。具体步骤包括：获取该属性的所有不同取值（\texttt{X[feature].unique()}），按各取值将样本分组并构建子集标签列表，调用 \texttt{information\_gain} 方法计算该属性的增益，并记录增益最大的属性作为最优分裂属性。
 
-\item \textbf{属性选择}：遍历所有可用属性，对每个属性计算其信息增益。具体步骤为：
-\begin{itemize}
-    \item 获取该属性的所有不同取值（\texttt{X[feature].unique()}）
-    \item 按各取值将样本分组，构建子集标签列表
-    \item 调用 \texttt{information\_gain} 方法计算该属性的增益
-    \item 记录增益最大的属性作为最优分裂属性
-\end{itemize}
-
-\item \textbf{递归分裂}：选定最优分裂属性后，按该属性的每个不同取值创建子分支。对于每个分支：
-\begin{itemize}
-    \item 使用布尔掩码 \texttt{mask} 筛选出满足该属性值的样本
-    \item 从可用属性集合中移除已分裂的属性（\texttt{remaining\_features}）
-    \item 递归调用 \texttt{build\_tree} 构建子树
-\end{itemize}
-
-\end{enumerate}
+最后进行递归分裂。选定最优分裂属性后，按该属性的每个不同取值创建子分支。对于每个分支，使用布尔掩码 \texttt{mask} 筛选出满足该属性值的样本，从可用属性集合中移除已分裂的属性（\texttt{remaining\_features}），最后递归调用 \texttt{build\_tree} 构建子树。
 
 \subsection{实验结果}
 
@@ -395,18 +375,11 @@ def find_best_continuous_split(self, X_col, y, feature_name):
 
 \subsubsection{代码讲解}
 
-连续属性处理是 C4.5 相比 ID3 的关键改进。\texttt{find\_best\_continuous\_split} 函数的核心思想是：
+连续属性处理是 C4.5 相比 ID3 的关键改进。\texttt{find\_best\_continuous\_split} 函数的核心思想首先在于候选阈值的生成。对属性值进行排序并提取唯一值，相邻两个不同值的中点被作为候选分裂阈值。例如，若排序后的唯一值为 $[0.5, 0.7, 0.9]$，则候选阈值为 $[0.6, 0.8]$。这种方式能有效减少阈值的搜索空间。
 
-\begin{enumerate}
-\item \textbf{候选阈值生成}：对属性值进行排序并提取唯一值。相邻两个不同值的中点被作为候选分裂阈值。例如，若排序后的唯一值为 $[0.5, 0.7, 0.9]$，则候选阈值为 $[0.6, 0.8]$。这种方式能有效减少阈值的搜索空间。
+其次进行阈值评估。对每个候选阈值，将数据分为两部分：$X \leq \text{threshold}$ 和 $X > \text{threshold}$。计算此二分裂下的信息增益率。
 
-\item \textbf{阈值评估}：对每个候选阈值，将数据分为两部分：$X \leq \text{threshold}$ 和 $X > \text{threshold}$。计算此二分裂下的信息增益率。
-
-\item \textbf{最优阈值选择}：在所有有效的二分裂中（两部分都非空），选择能最大化增益率的阈值。
-
-\end{enumerate}
-
-相比穷举所有可能的分裂点，该方法大大降低了计算复杂度，同时保留了充分的表达能力。
+最后进行最优阈值的选择。在所有有效的二分裂中（两部分都非空），选择能最大化增益率的阈值。相比穷举所有可能的分裂点，该方法大大降低了计算复杂度，同时保留了充分的表达能力。
 
 \subsection{信息增益率}
 
@@ -449,20 +422,13 @@ def information_gain_ratio(self, parent_labels, child_labels_list):
 
 \subsubsection{代码讲解}
 
-信息增益率是对信息增益的改进，解决了 ID3 对多值属性的偏好问题。代码实现流程如下：
+信息增益率是对信息增益的改进，解决了 ID3 对多值属性的偏好问题。首先在基础增益计算方面，函数计算属性分裂前的熵（\texttt{parent\_entropy}），然后计算分裂后各子集的加权熵，二者之差即为原始的信息增益。
 
-\begin{enumerate}
-\item \textbf{基础增益计算}：首先计算属性分裂前的熵（\texttt{parent\_entropy}），然后计算分裂后各子集的加权熵，二者之差即为原始的信息增益。
+其次进行分裂信息计算。\texttt{split\_info} 方法计算分裂信息，其值随着分支数增加而增加。多值属性会产生较大的分裂信息。
 
-\item \textbf{分裂信息计算}：\texttt{split\_info} 方法计算分裂信息，其值随着分支数增加而增加。多值属性会产生较大的分裂信息。
+随后进行增益率归一化。通过将增益除以分裂信息，使得多值属性的增益被压低，避免算法过度偏好多值属性。这是 C4.5 相比 ID3 的根本改进。
 
-\item \textbf{增益率归一化}：通过将增益除以分裂信息，使得多值属性的增益被压低，避免算法过度偏好多值属性。这是 C4.5 相比 ID3 的根本改进。
-
-\item \textbf{边界处理}：当分裂信息为 0（即所有分支大小都相等且只有一个分支）时，避免除以零的错误。
-
-\end{enumerate}
-
-在实践中，信息增益率能产生更平衡的决策树，对未见过的数据有更好的泛化能力。
+最后需要考虑边界处理。当分裂信息为 0（即所有分支大小都相等且只有一个分支）时，避免除以零的错误。在实践中，信息增益率能产生更平衡的决策树，对未见过的数据有更好的泛化能力。
 
 \subsection{实验结果}
 
@@ -520,22 +486,13 @@ def fit(self, X, y):
 
 \subsubsection{代码讲解}
 
-属性类型自动识别是 C4.5 实现的重要细节，使得算法能自动适应混合属性数据集：
+属性类型自动识别是 C4.5 实现的重要细节，使得算法能自动适应混合属性数据集。首先在属性收集阶段，\texttt{fit} 方法提取数据集的所有特征列名，保存在 \texttt{feature\_names} 中。
 
-\begin{enumerate}
-\item \textbf{属性收集}：\texttt{fit} 方法首先提取数据集的所有特征列名，保存在 \texttt{feature\_names} 中。
+其次进行类型识别。使用 pandas 库的 \texttt{is\_numeric\_dtype} 函数检查每个特征列的数据类型。若为数值型（int、float 等），则标记为连续属性，加入 \texttt{continuous\_features} 集合；否则视为离散属性。
 
-\item \textbf{类型识别}：使用 pandas 库的 \texttt{is\_numeric\_dtype} 函数检查每个特征列的数据类型。若为数值型（int、float 等），则标记为连续属性，加入 \texttt{continuous\_features} 集合；否则视为离散属性。
+然后在建树过程中进行差异化处理。当遍历特征选择最优分裂属性时，会针对特征类型采用不同策略：对连续特征调用 \texttt{find\_best\_continuous\_split} 寻找最优二分阈值，而对离散特征则枚举所有不同取值，按值进行多路分裂。
 
-\item \textbf{差异化处理}：在建树过程中，当遍历特征选择最优分裂属性时，会针对特征类型采用不同策略：
-\begin{itemize}
-    \item 连续特征：调用 \texttt{find\_best\_continuous\_split} 寻找最优二分阈值
-    \item 离散特征：枚举所有不同取值，按值进行多路分裂
-\end{itemize}
-
-\item \textbf{用户友好性}：自动识别机制让用户无需手动预处理数据，直接传入混合属性数据集即可。相比 ID3 需要预先离散化连续属性，C4.5 更加易用。
-
-\end{enumerate}
+最后实现了用户友好性。自动识别机制让用户无需手动预处理数据，直接传入混合属性数据集即可。相比 ID3 需要预先离散化连续属性，C4.5 更加易用和灵活。
 
 \section{高级要求：CART 决策树构建与预测}
 
@@ -590,25 +547,11 @@ def weighted_gini(self, left_labels, right_labels):
 
 \subsubsection{代码讲解}
 
-CART 使用基尼指数作为分裂准则，相比信息论方法具有计算优势。代码涵盖两个关键函数：
+CART 使用基尼指数作为分裂准则，相比信息论方法具有计算优势。代码实现涵盖两个关键方面。
 
-\begin{enumerate}
-\item \textbf{基尼指数计算}（\texttt{gini\_index}）：
-\begin{itemize}
-    \item 遍历数据集中各类别，计算每类的比例 $p_k$
-    \item 基尼指数定义为 $Gini(D) = 1 - \sum_{k=1}^{c} p_k^2$，体现数据的不纯度
-    \item 当数据集只包含一个类别时，基尼指数为 0（纯净）；当各类比例相等时，基尼指数最大
-\end{itemize}
+首先是基尼指数计算（\texttt{gini\_index}）。该函数遍历数据集中各类别，计算每类的比例 $p_k$。基尼指数定义为 $Gini(D) = 1 - \sum_{k=1}^{c} p_k^2$，体现数据的不纯度。当数据集只包含一个类别时，基尼指数为 0（纯净）；当各类比例相等时，基尼指数最大。
 
-\item \textbf{加权基尼指数}（\texttt{weighted\_gini}）：
-\begin{itemize}
-    \item 对于二分裂，分别计算左右两个子集的基尼指数
-    \item 按子集大小比例进行加权求和
-    \item 公式为：$Gini_{split} = \frac{|L|}{|D|} \cdot Gini(L) + \frac{|R|}{|D|} \cdot Gini(R)$
-    \item 在寻找最优分裂时，选择能最小化加权基尼指数的分裂点
-\end{itemize}
-
-\end{enumerate}
+其次是加权基尼指数（\texttt{weighted\_gini}）。对于二分裂，分别计算左右两个子集的基尼指数。然后按子集大小比例进行加权求和，公式为：$Gini_{split} = \frac{|L|}{|D|} \cdot Gini(L) + \frac{|R|}{|D|} \cdot Gini(R)$。在寻找最优分裂时，选择能最小化加权基尼指数的分裂点。
 
 CART 的二分策略（每次只分裂成两个分支）使得树的结构更规则，易于剪枝和理解。虽然可能导致树深度较深，但通过剪枝可以获得更优的复杂度-精度平衡。
 
@@ -651,13 +594,7 @@ CART 的二分策略（每次只分裂成两个分支）使得树的结构更规
 
 \subsection{REP 算法流程}
 
-\begin{enumerate}
-\item 从训练集中随机分出 20\% 作为验证集（random\_state=42 保证可复现性）
-\item 在较小的训练集上重新训练决策树
-\item 对每个内部节点，尝试将其替换为叶子（预测为该节点的多数类）
-\item 若替换后验证集精度不下降，则保留该剪枝操作
-\item 自底向上重复第 3、4 步，直到无法继续剪枝
-\end{enumerate}
+REP 算法的执行过程主要包括以下步骤：从训练集中随机分出 20\% 作为验证集（random\_state=42 保证可复现性），然后在较小的训练集上重新训练决策树。接下来对每个内部节点，尝试将其替换为叶子（预测为该节点的多数类）。若替换后验证集精度不下降，则保留该剪枝操作。最后自底向上重复上述步骤，直到无法继续剪枝。
 
 \begin{lstlisting}[language=Python,caption={简化后剪枝实现}]
 def reduced_error_pruning(tree_model, X_valid, y_valid):
@@ -709,31 +646,13 @@ def reduced_error_pruning(tree_model, X_valid, y_valid):
 
 \subsubsection{代码讲解}
 
-简化后剪枝（REP）通过在验证集上的精度变化来指导剪枝决策。实现原理如下：
+简化后剪枝（REP）通过在验证集上的精度变化来指导剪枝决策。首先在验证集分离阶段，调用剪枝前，通常从训练集中分出 20\% 作为验证集（通过 \texttt{np.random.choice}）。验证集用于评估剪枝效果，不参与树的构建。
 
-\begin{enumerate}
-\item \textbf{验证集分离}：在调用剪枝前，通常从训练集中分出 20\% 作为验证集（通过 \texttt{np.random.choice}）。验证集用于评估剪枝效果，不参与树的构建。
+其次是递归剪枝流程（\texttt{prune\_node} 函数）。若节点是叶子，无需剪枝，直接返回。否则，先对所有子节点递归尝试剪枝，自底向上进行。对当前节点，记录原始状态（\texttt{old\_*} 变量），尝试将节点替换为叶子（预测为该节点的多数类），临时改变节点属性。然后在验证集上计算替换前后的精度（\texttt{acc\_before} 和 \texttt{acc\_after}）。若替换后精度不下降，则保留剪枝；否则恢复原状。
 
-\item \textbf{递归剪枝流程}（\texttt{prune\_node} 函数）：
-\begin{itemize}
-    \item 若节点是叶子，无需剪枝，直接返回
-    \item 否则，先对所有子节点递归尝试剪枝，自底向上进行
-    \item 对当前节点，记录原始状态（\texttt{old\_*} 变量）
-    \item 尝试将节点替换为叶子（预测为该节点的多数类），临时改变节点属性
-    \item 在验证集上计算替换前后的精度（\texttt{acc\_before} 和 \texttt{acc\_after}）
-    \item 若替换后精度不下降，则保留剪枝；否则恢复原状
-\end{itemize}
+随后进行迭代优化。外层循环最多迭代 100 次，每次调用 \texttt{prune\_node}。只要还有节点被成功剪枝，就继续迭代。当某次迭代无任何剪枝发生，算法停止。
 
-\item \textbf{迭代优化}：外层循环最多迭代 100 次，每次调用 \texttt{prune\_node}。只要还有节点被成功剪枝，就继续迭代。当某次迭代无任何剪枝发生，算法停止。
-
-\item \textbf{关键特性}：
-\begin{itemize}
-    \item REP 是后剪枝方法，先构建完整的树再剪枝，避免过早停止导致信息丧失
-    \item 使用独立的验证集而非训练集评估剪枝效果，更客观地反映泛化能力
-    \item 自底向上的递归策略确保了剪枝的系统性和一致性
-\end{itemize}
-
-\end{enumerate}
+最后需要注意几个关键特性：REP 是后剪枝方法，先构建完整的树再剪枝，避免过早停止导致信息丧失。使用独立的验证集而非训练集评估剪枝效果，更客观地反映泛化能力。自底向上的递归策略确保了剪枝的系统性和一致性。
 
 \subsection{剪枝实施结果}
 
@@ -852,16 +771,13 @@ CART & \checkmark 二分处理 & \checkmark 自动二分 & \checkmark \\
 \end{tabular}
 \end{table}
 
-\subsection{算法选择建议}
+\subsection{算法特点}
 
-\begin{enumerate}
-\item \textbf{ID3}：适用于纯离散属性数据集，数据规模较小，属性值有限的场景。优点是算法简洁高效，缺点是不支持连续属性。
+\textbf{ID3} 算法适用于纯离散属性数据集，数据规模较小，属性值有限的场景。其主要优点是算法简洁高效，容易理解和实现，但缺点是不支持连续属性，这限制了其在包含数值特征的数据集上的应用。
 
-\item \textbf{C4.5}：适用于混合属性数据集，属性数较多，类标签多的场景。通过增益率解决了 ID3 的多值偏向问题，扩展了连续属性支持。
+\textbf{C4.5} 算法则适用于混合属性数据集，特别是当属性数较多、类标签众多的场景。C4.5 通过引入增益率概念解决了 ID3 的多值偏向问题，使其在属性选择上更加均衡。同时，C4.5 扩展了对连续属性的支持，能够自动寻找最优分裂阈值，大大提高了算法的应用范围。
 
-\item \textbf{CART}：适用于生产环境，需要回归扩展的场景。二叉树结构易于剪枝和理解，基尼指数计算更快。
-
-\end{enumerate}
+\textbf{CART} 算法特别适用于生产环境中需要回归扩展的场景。CART 生成的二叉树结构易于进行剪枝操作和人工解释，同时基于基尼指数的计算相比信息熵计算更加高效，这使得 CART 在处理大规模数据集时具有性能优势。
 
 \subsection{本实验观察}
 
