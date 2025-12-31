@@ -1,0 +1,21 @@
+(machinelearning) D:\study\machinelearning\work7\seg-net>python visualize_simple.py --model segnet --checkpoint out\checkpoint.pth.tar --data data\multi-digit-mnist\testset001.mat --save segnet_result.png
+============================================================
+简单分割可视化工具
+============================================================
+
+加载模型: segnet
+  ✓ 模型加载成功: out\checkpoint.pth.tar
+
+加载数据: data\multi-digit-mnist\testset001.mat
+  ✓ 数据加载成功，共 6 张图像
+
+开始预测...
+  ✓ 预测完成
+
+可视化结果...
+visualize_simple.py:114: RuntimeWarning: invalid value encountered in divide
+  iu = np.diag(hist) / (hist.sum(axis=1) + hist.sum(axis=0) - np.diag(hist))
+  ✓ 结果已保存: segnet_result.png
+
+性能: mIoU = 0.9574
+============================================================

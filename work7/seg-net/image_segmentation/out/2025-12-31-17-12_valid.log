@@ -1,0 +1,2 @@
+2025-12-31 17:12:51,157 Namespace(frequent=10, gpus='', num_workers=1, out_dir='out')
+2025-12-31 17:12:51,935 => loading model from out\model_best.pth.tar

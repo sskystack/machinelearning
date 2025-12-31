@@ -10,15 +10,14 @@ from scipy.io import loadmat
 import torch
 
 from lib.models.seg_net_lite import get_seg_net
-from lib.models.fc_autoencoder import get_fc_autoencoder
 from lib.utils.vis import vis_segments
 
 
 def main():
     parser = argparse.ArgumentParser(description='简单分割可视化工具')
     parser.add_argument('--model', type=str, default='segnet',
-                        choices=['segnet', 'fc'],
-                        help='模型类型: segnet 或 fc')
+                        choices=['segnet'],
+                        help='模型类型: segnet')
     parser.add_argument('--checkpoint', type=str, required=True,
                         help='模型checkpoint路径')
     parser.add_argument('--data', type=str, required=True,
@@ -36,8 +35,6 @@ def main():
     print(f"\n加载模型: {args.model}")
     if args.model == 'segnet':
         model = get_seg_net()
-    elif args.model == 'fc':
-        model = get_fc_autoencoder()
     
     checkpoint = torch.load(args.checkpoint, map_location='cpu', weights_only=False)
     if 'state_dict' in checkpoint:

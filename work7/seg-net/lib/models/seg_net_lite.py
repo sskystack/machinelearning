@@ -40,7 +40,25 @@ class SegNetLite(nn.Module):
         layers_conv_down = []
         layers_bn_down = []
         layers_pooling = []
-        raise NotImplementedError('Downsampling layers are not implemented!')
+        for i in range(self.num_down_layers):
+            layers_conv_down.append(
+                nn.Conv2d(
+                    in_channels=input_size,
+                    out_channels=down_filter_sizes[i],
+                    kernel_size=kernel_sizes[i],
+                    padding=conv_paddings[i],
+                    bias=False,
+                )
+            )
+            layers_bn_down.append(nn.BatchNorm2d(down_filter_sizes[i]))
+            layers_pooling.append(
+                nn.MaxPool2d(
+                    kernel_size=pooling_kernel_sizes[i],
+                    stride=pooling_strides[i],
+                    return_indices=True,
+                )
+            )
+            input_size = down_filter_sizes[i]
 
         # Convert Python list to nn.ModuleList, so that PyTorch's autograd
         # package can track gradients and update parameters of these layers
@@ -56,7 +74,24 @@ class SegNetLite(nn.Module):
         layers_conv_up = []
         layers_bn_up = []
         layers_unpooling = []
-        raise NotImplementedError('Upsampling layers are not implemented!')
+        for i in range(self.num_up_layers):
+            layers_unpooling.append(
+                nn.MaxUnpool2d(
+                    kernel_size=pooling_kernel_sizes[-(i + 1)],
+                    stride=pooling_strides[-(i + 1)],
+                )
+            )
+            layers_conv_up.append(
+                nn.Conv2d(
+                    in_channels=input_size,
+                    out_channels=up_filter_sizes[i],
+                    kernel_size=kernel_sizes[-(i + 1)],
+                    padding=conv_paddings[-(i + 1)],
+                    bias=False,
+                )
+            )
+            layers_bn_up.append(nn.BatchNorm2d(up_filter_sizes[i]))
+            input_size = up_filter_sizes[i]
 
         # Convert Python list to nn.ModuleList, so that PyTorch's autograd
         # can track gradients and update parameters of these layers
@@ -67,10 +102,29 @@ class SegNetLite(nn.Module):
         self.relu = nn.ReLU(True)
 
         # Implement a final 1x1 convolution to to get the logits of 11 classes (background + 10 digits)
-        raise NotImplementedError('Final convolution layer is not implemented!')
+        self.conv_final = nn.Conv2d(input_size, 11, kernel_size=1, padding=0, bias=True)
 
     def forward(self, x):
-        raise NotImplementedError('Forward function not implemented!')
+        pooling_indices = []
+        pooling_sizes = []
+
+        for i in range(self.num_down_layers):
+            x = self.layers_conv_down[i](x)
+            x = self.layers_bn_down[i](x)
+            x = self.relu(x)
+            pooling_sizes.append(x.size())
+            x, indices = self.layers_pooling[i](x)
+            pooling_indices.append(indices)
+
+        for i in range(self.num_up_layers):
+            j = self.num_up_layers - 1 - i
+            x = self.layers_unpooling[i](x, pooling_indices[j], output_size=pooling_sizes[j])
+            x = self.layers_conv_up[i](x)
+            x = self.layers_bn_up[i](x)
+            x = self.relu(x)
+
+        x = self.conv_final(x)
+        return x
 
 
 def get_seg_net(**kwargs):
