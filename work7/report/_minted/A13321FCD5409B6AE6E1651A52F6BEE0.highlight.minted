@@ -1,0 +1,17 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{normal\PYGZus{}equation\PYGZus{}fit}\PYG{p}{(}\PYG{n}{x\PYGZus{}train}\PYG{p}{:} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ndarray}\PYG{p}{,} \PYG{n}{y\PYGZus{}train}\PYG{p}{:} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ndarray}\PYG{p}{)}\PYG{p}{:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{    使用正规方程求解线性回归参数}
+\PYG{l+s+sd}{    θ = (X\PYGZca{}T X)\PYGZca{}\PYGZob{}\PYGZhy{}1\PYGZcb{} X\PYGZca{}T y}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{c+c1}{\PYGZsh{} 构造设计矩阵 Xb = [x, 1]}
+    \PYG{n}{m} \PYG{o}{=} \PYG{n}{x\PYGZus{}train}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}
+    \PYG{n}{Xb} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{column\PYGZus{}stack}\PYG{p}{(}\PYG{p}{[}\PYG{n}{x\PYGZus{}train}\PYG{p}{,} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ones}\PYG{p}{(}\PYG{n}{m}\PYG{p}{)}\PYG{p}{]}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} 计算 theta = (Xb\PYGZca{}T Xb)\PYGZca{}\PYGZob{}\PYGZhy{}1\PYGZcb{} Xb\PYGZca{}T y}
+    \PYG{n}{theta} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{inv}\PYG{p}{(}\PYG{n}{Xb}\PYG{o}{.}\PYG{n}{T} \PYG{o}{@} \PYG{n}{Xb}\PYG{p}{)} \PYG{o}{@} \PYG{n}{Xb}\PYG{o}{.}\PYG{n}{T} \PYG{o}{@} \PYG{n}{y\PYGZus{}train}
+
+    \PYG{c+c1}{\PYGZsh{} 返回权重 w 和偏置 b}
+    \PYG{n}{w}\PYG{p}{,} \PYG{n}{b} \PYG{o}{=} \PYG{n}{theta}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{,} \PYG{n}{theta}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}
+    \PYG{k}{return} \PYG{n}{w}\PYG{p}{,} \PYG{n}{b}
+\end{MintedVerbatim}

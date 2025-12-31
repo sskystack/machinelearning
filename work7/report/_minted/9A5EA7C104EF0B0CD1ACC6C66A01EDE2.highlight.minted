@@ -1,0 +1,15 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYGZhy{}\PYGZhy{}\PYGZhy{} Single Lambda Test \PYGZhy{}\PYGZhy{}\PYGZhy{}
+lambda=1.0 \PYGZhy{}\PYGZgt{} Train MSE: 0.5627
+lambda=1.0 \PYGZhy{}\PYGZgt{} Test MSE:  0.5696
+lambda=1.0 \PYGZhy{}\PYGZgt{} Weight norm: 0.6409
+
+\PYGZhy{}\PYGZhy{}\PYGZhy{} Comparison of Different Lambdas \PYGZhy{}\PYGZhy{}\PYGZhy{}
+λ=  0.0 \PYGZhy{}\PYGZgt{} Train MSE=0.5627, Test MSE=0.5695, ||w||=0.6438
+λ=  0.1 \PYGZhy{}\PYGZgt{} Train MSE=0.5627, Test MSE=0.5695, ||w||=0.6435
+λ=  0.5 \PYGZhy{}\PYGZgt{} Train MSE=0.5627, Test MSE=0.5695, ||w||=0.6423
+λ=  1.0 \PYGZhy{}\PYGZgt{} Train MSE=0.5627, Test MSE=0.5696, ||w||=0.6409
+λ=  5.0 \PYGZhy{}\PYGZgt{} Train MSE=0.5628, Test MSE=0.5701, ||w||=0.6304
+λ= 10.0 \PYGZhy{}\PYGZgt{} Train MSE=0.5630, Test MSE=0.5708, ||w||=0.6186
+λ=100.0 \PYGZhy{}\PYGZgt{} Train MSE=0.5853, Test MSE=0.5981, ||w||=0.5249
+\end{MintedVerbatim}

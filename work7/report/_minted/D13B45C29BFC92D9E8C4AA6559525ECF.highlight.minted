@@ -1,0 +1,21 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} 数据读取与划分}
+\PYG{n}{df} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}csv}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{data/winequality\PYGZhy{}white.csv}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{sep}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{;}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{X} \PYG{o}{=} \PYG{n}{df}\PYG{o}{.}\PYG{n}{iloc}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,} \PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{to\PYGZus{}numpy}\PYG{p}{(}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{float}\PYG{p}{)}
+\PYG{n}{y} \PYG{o}{=} \PYG{n}{df}\PYG{o}{.}\PYG{n}{iloc}\PYG{p}{[}\PYG{p}{:}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{to\PYGZus{}numpy}\PYG{p}{(}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{float}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} 按 4:1 比例划分（80\PYGZpc{} 训练，20\PYGZpc{} 测试）}
+\PYG{n}{X\PYGZus{}train}\PYG{p}{,} \PYG{n}{y\PYGZus{}train}\PYG{p}{,} \PYG{n}{X\PYGZus{}test}\PYG{p}{,} \PYG{n}{y\PYGZus{}test} \PYG{o}{=} \PYG{n}{train\PYGZus{}test\PYGZus{}split}\PYG{p}{(}\PYG{n}{X}\PYG{p}{,} \PYG{n}{y}\PYG{p}{,} \PYG{n}{test\PYGZus{}ratio}\PYG{o}{=}\PYG{l+m+mf}{0.2}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} 特征标准化}
+\PYG{n}{X\PYGZus{}train}\PYG{p}{,} \PYG{n}{X\PYGZus{}test} \PYG{o}{=} \PYG{n}{normalize}\PYG{p}{(}\PYG{n}{X\PYGZus{}train}\PYG{p}{,} \PYG{n}{X\PYGZus{}test}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} 训练模型}
+\PYG{n}{w}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{hist} \PYG{o}{=} \PYG{n}{gd\PYGZus{}train}\PYG{p}{(}\PYG{n}{X\PYGZus{}train}\PYG{p}{,} \PYG{n}{y\PYGZus{}train}\PYG{p}{,} \PYG{n}{lr}\PYG{o}{=}\PYG{l+m+mf}{0.01}\PYG{p}{,} \PYG{n}{epochs}\PYG{o}{=}\PYG{l+m+mi}{800}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} 评估}
+\PYG{n}{y\PYGZus{}train\PYGZus{}pred} \PYG{o}{=} \PYG{n}{X\PYGZus{}train} \PYG{o}{@} \PYG{n}{w} \PYG{o}{+} \PYG{n}{b}
+\PYG{n}{y\PYGZus{}test\PYGZus{}pred} \PYG{o}{=} \PYG{n}{X\PYGZus{}test} \PYG{o}{@} \PYG{n}{w} \PYG{o}{+} \PYG{n}{b}
+\PYG{n}{train\PYGZus{}mse} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{mean}\PYG{p}{(}\PYG{p}{(}\PYG{n}{y\PYGZus{}train} \PYG{o}{\PYGZhy{}} \PYG{n}{y\PYGZus{}train\PYGZus{}pred}\PYG{p}{)} \PYG{o}{*}\PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{)}
+\PYG{n}{test\PYGZus{}mse} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{mean}\PYG{p}{(}\PYG{p}{(}\PYG{n}{y\PYGZus{}test} \PYG{o}{\PYGZhy{}} \PYG{n}{y\PYGZus{}test\PYGZus{}pred}\PYG{p}{)} \PYG{o}{*}\PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{)}
+\end{MintedVerbatim}

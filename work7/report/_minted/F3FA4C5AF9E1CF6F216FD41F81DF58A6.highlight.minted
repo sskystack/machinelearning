@@ -1,0 +1,34 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} 初始化权重和偏置（所有学习率使用相同的初始值，确保公平对比）}
+\PYG{n}{w\PYGZus{}init} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{randn}\PYG{p}{(}\PYG{n}{X\PYGZus{}train}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)} \PYG{o}{*} \PYG{l+m+mf}{0.01}
+\PYG{n}{b\PYGZus{}init} \PYG{o}{=} \PYG{l+m+mf}{0.0}
+
+\PYG{n}{lrs} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mf}{0.001}\PYG{p}{,} \PYG{l+m+mf}{0.01}\PYG{p}{,} \PYG{l+m+mf}{0.05}\PYG{p}{,} \PYG{l+m+mf}{0.1}\PYG{p}{]}
+\PYG{n}{curves} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{p}{\PYGZcb{}}
+\PYG{n}{epochs} \PYG{o}{=} \PYG{l+m+mi}{300}
+
+\PYG{k}{for} \PYG{n}{lr} \PYG{o+ow}{in} \PYG{n}{lrs}\PYG{p}{:}
+    \PYG{c+c1}{\PYGZsh{} 使用不同的学习率训练模型}
+    \PYG{n}{w}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{hist} \PYG{o}{=} \PYG{n}{gd\PYGZus{}train}\PYG{p}{(}\PYG{n}{X\PYGZus{}train}\PYG{p}{,} \PYG{n}{y\PYGZus{}train}\PYG{p}{,} \PYG{n}{w\PYGZus{}init}\PYG{p}{,} \PYG{n}{b\PYGZus{}init}\PYG{p}{,} \PYG{n}{lr}\PYG{o}{=}\PYG{n}{lr}\PYG{p}{,} \PYG{n}{epochs}\PYG{o}{=}\PYG{n}{epochs}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} 计算训练集和测试集误差}
+    \PYG{n}{train\PYGZus{}m} \PYG{o}{=} \PYG{n}{mse}\PYG{p}{(}\PYG{n}{y\PYGZus{}train}\PYG{p}{,} \PYG{n}{X\PYGZus{}train} \PYG{o}{@} \PYG{n}{w} \PYG{o}{+} \PYG{n}{b}\PYG{p}{)}
+    \PYG{n}{test\PYGZus{}m} \PYG{o}{=} \PYG{n}{mse}\PYG{p}{(}\PYG{n}{y\PYGZus{}test}\PYG{p}{,} \PYG{n}{X\PYGZus{}test} \PYG{o}{@} \PYG{n}{w} \PYG{o}{+} \PYG{n}{b}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} 存储结果用于后续分析和绘图}
+    \PYG{n}{curves}\PYG{p}{[}\PYG{n}{lr}\PYG{p}{]} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{hist}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{hist}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{train\PYGZus{}mse}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{train\PYGZus{}m}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{test\PYGZus{}mse}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:} \PYG{n}{test\PYGZus{}m}\PYG{p}{\PYGZcb{}}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{lr=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{lr}\PYG{l+s+si}{:}\PYG{l+s+s1}{.3f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ \PYGZhy{}\PYGZgt{} Train MSE=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{train\PYGZus{}m}\PYG{l+s+si}{:}\PYG{l+s+s1}{.4f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, Test MSE=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{test\PYGZus{}m}\PYG{l+s+si}{:}\PYG{l+s+s1}{.4f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} 绘制不同学习率下的MSE收敛曲线}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{figure}\PYG{p}{(}\PYG{n}{figsize}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{7}\PYG{p}{,} \PYG{l+m+mi}{5}\PYG{p}{)}\PYG{p}{)}
+\PYG{k}{for} \PYG{n}{lr}\PYG{p}{,} \PYG{n}{info} \PYG{o+ow}{in} \PYG{n}{curves}\PYG{o}{.}\PYG{n}{items}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n}{plt}\PYG{o}{.}\PYG{n}{plot}\PYG{p}{(}\PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{info}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{hist}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}\PYG{p}{)} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{)}\PYG{p}{,} \PYG{n}{info}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{hist}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}\PYG{p}{,} \PYG{n}{label}\PYG{o}{=}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{lr=}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{lr}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{xlabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Epoch}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{ylabel}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Train MSE}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{title}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{MSE convergence under different learning rates}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{legend}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{tight\PYGZus{}layout}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{savefig}\PYG{p}{(}\PYG{n}{FIG\PYGZus{}PATH}\PYG{p}{,} \PYG{n}{dpi}\PYG{o}{=}\PYG{l+m+mi}{150}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{close}\PYG{p}{(}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Saved figure:}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{FIG\PYGZus{}PATH}\PYG{p}{)}
+\end{MintedVerbatim}

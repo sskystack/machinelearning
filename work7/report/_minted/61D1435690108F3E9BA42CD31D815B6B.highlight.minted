@@ -1,0 +1,13 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+[Template] This is a student skeleton.
+Please implement normal\PYGZus{}equation\PYGZus{}fit(x\PYGZus{}train, y\PYGZus{}train) that returns w, b.
+Train MSE: 3.3756
+Test MSE: 3.4544
+5 new predictions:
+  x=\PYGZhy{}12.00 \PYGZhy{}\PYGZgt{} y\PYGZus{}pred=\PYGZhy{}23.531
+  x=\PYGZhy{}3.00 \PYGZhy{}\PYGZgt{} y\PYGZus{}pred=\PYGZhy{}0.844
+  x=0.00 \PYGZhy{}\PYGZgt{} y\PYGZus{}pred=6.719
+  x=4.50 \PYGZhy{}\PYGZgt{} y\PYGZus{}pred=18.063
+  x=11.00 \PYGZhy{}\PYGZgt{} y\PYGZus{}pred=34.449
+Saved figure: outputs/task1\PYGZus{}fit\PYGZus{}template.png
+\end{MintedVerbatim}

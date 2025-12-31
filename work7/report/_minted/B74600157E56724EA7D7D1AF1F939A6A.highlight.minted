@@ -1,0 +1,42 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{gd\PYGZus{}train}\PYG{p}{(}\PYG{n}{X}\PYG{p}{:} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ndarray}\PYG{p}{,} \PYG{n}{y}\PYG{p}{:} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ndarray}\PYG{p}{,} \PYG{n}{lr}\PYG{o}{=}\PYG{l+m+mf}{0.01}\PYG{p}{,} \PYG{n}{epochs}\PYG{o}{=}\PYG{l+m+mi}{200}\PYG{p}{)}\PYG{p}{:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{    批量梯度下降（BGD）实现}
+\PYG{l+s+sd}{    X: shape (m, n) \PYGZhy{} 训练样本}
+\PYG{l+s+sd}{    y: shape (m,) \PYGZhy{} 训练标签}
+\PYG{l+s+sd}{    lr: 学习率}
+\PYG{l+s+sd}{    epochs: 迭代次数}
+\PYG{l+s+sd}{    返回: (w, b, history\PYGZus{}mse\PYGZus{}list)}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{m}\PYG{p}{,} \PYG{n}{n} \PYG{o}{=} \PYG{n}{X}\PYG{o}{.}\PYG{n}{shape}
+    \PYG{n}{w} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{randn}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)} \PYG{o}{*} \PYG{l+m+mf}{0.01}  \PYG{c+c1}{\PYGZsh{} 小的随机初始化}
+    \PYG{n}{b} \PYG{o}{=} \PYG{l+m+mf}{0.0}
+    \PYG{n}{history\PYGZus{}mse} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
+
+    \PYG{k}{for} \PYG{n}{epoch} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{epochs}\PYG{p}{)}\PYG{p}{:}
+        \PYG{c+c1}{\PYGZsh{} 前向传播：计算预测值}
+        \PYG{n}{y\PYGZus{}pred} \PYG{o}{=} \PYG{n}{X} \PYG{o}{@} \PYG{n}{w} \PYG{o}{+} \PYG{n}{b}
+
+        \PYG{c+c1}{\PYGZsh{} 计算MSE损失}
+        \PYG{n}{mse} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{mean}\PYG{p}{(}\PYG{p}{(}\PYG{n}{y} \PYG{o}{\PYGZhy{}} \PYG{n}{y\PYGZus{}pred}\PYG{p}{)} \PYG{o}{*}\PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{)}
+        \PYG{n}{history\PYGZus{}mse}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{mse}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{} 计算梯度（批量）}
+        \PYG{n}{error} \PYG{o}{=} \PYG{n}{y\PYGZus{}pred} \PYG{o}{\PYGZhy{}} \PYG{n}{y}
+        \PYG{n}{grad\PYGZus{}w} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{/} \PYG{n}{m}\PYG{p}{)} \PYG{o}{*} \PYG{p}{(}\PYG{n}{X}\PYG{o}{.}\PYG{n}{T} \PYG{o}{@} \PYG{n}{error}\PYG{p}{)}
+        \PYG{n}{grad\PYGZus{}b} \PYG{o}{=} \PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{/} \PYG{n}{m}\PYG{p}{)} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(}\PYG{n}{error}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{} 梯度裁剪防止数值爆炸}
+        \PYG{n}{grad\PYGZus{}w} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{clip}\PYG{p}{(}\PYG{n}{grad\PYGZus{}w}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+        \PYG{n}{grad\PYGZus{}b} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{clip}\PYG{p}{(}\PYG{n}{grad\PYGZus{}b}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)}
+
+        \PYG{c+c1}{\PYGZsh{} 更新参数}
+        \PYG{n}{w} \PYG{o}{=} \PYG{n}{w} \PYG{o}{\PYGZhy{}} \PYG{n}{lr} \PYG{o}{*} \PYG{n}{grad\PYGZus{}w}
+        \PYG{n}{b} \PYG{o}{=} \PYG{n}{b} \PYG{o}{\PYGZhy{}} \PYG{n}{lr} \PYG{o}{*} \PYG{n}{grad\PYGZus{}b}
+
+        \PYG{c+c1}{\PYGZsh{} 每100个epoch打印一次进度}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{epoch} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{\PYGZpc{}} \PYG{l+m+mi}{100} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Epoch }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{epoch}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{/}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{epochs}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{, MSE: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{mse}\PYG{l+s+si}{:}\PYG{l+s+s1}{.6f}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+
+    \PYG{k}{return} \PYG{n}{w}\PYG{p}{,} \PYG{n}{b}\PYG{p}{,} \PYG{n}{history\PYGZus{}mse}
+\end{MintedVerbatim}

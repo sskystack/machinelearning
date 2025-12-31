@@ -1,0 +1,8 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+[Template] Implement gd\PYGZus{}train(X\PYGZus{}train, y\PYGZus{}train) to compare learning rates.
+lr=0.001 \PYGZhy{}\PYGZgt{} Train MSE=31.6693, Test MSE=31.8555
+lr=0.010 \PYGZhy{}\PYGZgt{} Train MSE=8.8105, Test MSE=8.8822
+lr=0.050 \PYGZhy{}\PYGZgt{} Train MSE=0.5636, Test MSE=0.5744
+lr=0.100 \PYGZhy{}\PYGZgt{} Train MSE=0.5629, Test MSE=0.5719
+Saved figure: outputs/task3\PYGZus{}lr\PYGZus{}curves\PYGZus{}template.png
+\end{MintedVerbatim}
